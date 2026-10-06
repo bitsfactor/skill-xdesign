@@ -26,7 +26,7 @@ If the brief is vague: ask ONE question, or state an assumption and proceed.
 Only if the product is genuinely abstract (an API gateway, a data platform) use a **diagram** grammar instead — see `references/figure-recipes.md` §B.
 
 ## Phase 3 · Draw (constraints & techniques)
-**Illustrate the object with SVG** — shapes first (`rect`/`circle`/`path`/`text`), then 2–4 layers for material and light (base → shading → highlight → accent). Keep a limited palette (one accent). Add product-specific detail (a stitch line, a lid, a steam wisp).
+**Illustrate the object with SVG** — shapes first (`rect`/`circle`/`path`/`text`), then 2–4 layers for material and light. The 5 techniques that make an object read as "nice" (detail in `references/figure-recipes.md` §A): (1) true silhouette + ONE defining feature (crimped top / lid / valve); (2) material in 2–3 flat tones + one highlight (no gradients); (3) a soft ground shadow so it sits; (4) 1–2 small supporting props from the product's world; (5) generous space, object ~40–55% width, centered.
 **Composition** — the object is the focal and is the heaviest element; sit it in a framed panel (subtle surface + 1px border + radius; optional hairline top bar [label + one live status] + a telemetry strip of 3–5 real facts). Fill ~85%; no empty quadrant; hero text ≥13px **rendered**.
 **Craft rules** — 4px grid; hierarchy by weight + color (not size alone); ≤3 fonts in roles (display/body/mono); every value a token (`var()`); text contrast ≥4.5:1; `role="img"` + `aria-labelledby`; decorative bits `aria-hidden`; optional motion that respects `prefers-reduced-motion`.
 **Robustness** — no horizontal overflow at 320/375/768/1280; touch targets ≥44px; working mobile nav; anchors not hidden behind a sticky header.

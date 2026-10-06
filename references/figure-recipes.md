@@ -5,16 +5,23 @@ One hero per page: **a picture of the product**. Default = a **literal object/sc
 ## A. Object illustration (DEFAULT for physical / experiential products)
 Pick the product's iconic object (see SKILL Phase 2), then build it from primitives in 2–4 layers: **base shape → shading → highlight → accent detail**.
 
+### How to make an object look GOOD (the 5 techniques that separate "nice" from "flat")
+1. **True silhouette + ONE defining feature.** Draw the object's real proportions (a bag is taller than wide, wider at the base, softly rounded). Then add one characteristic detail: a **crimped/zippered top** (a row of vertical stitch lines), a lid, a handle, a valve, a spout, a fold. This feature is what makes it read as *the object*.
+2. **Material in 2–3 flat tones, one highlight.** Body tone, a slightly darker side/edge for volume, a lighter label/surface. **No gradients.** One soft highlight where the light hits.
+3. **Ground it.** A soft **ellipse shadow** under the object (fill black, opacity ~0.08–0.15, blurred/soft), so it sits on a surface instead of floating.
+4. **1–2 supporting props** from the product's own world, small + muted: a brew card peeking out, 2–3 coffee beans, a leaf, a tag on a string. These complete the scene without competing with the focal.
+5. **Generous space, centered.** The object occupies ~40–55% of the figure width with real margins; do **not** fill the panel with boxes. One accent only.
+
 ### Worked example — a coffee subscription → "the bag with its label"
 1. **Subject**: the coffee bag (the artifact the customer receives).
-2. **Twist**: present it as a **specimen label** — the bag's label carries the batch facts.
-3. **Layers** (viewBox ~`560×440`, object centered, fills ~85%):
-   - bag body: rounded `path`/`rect` (w≈300 h≈360 rx≈16), fill `--surface-2`, 1px `--line`; a top fold line + a small zip/valve detail.
-   - label card: rounded `rect` (w≈210 h≈240 rx≈12) in a parchment/contrast surface, slight shadow (one soft, not a stack).
-   - label content (real data): brand + `LOT 026·03`; origin `耶加雪菲 · 班可`; rows `海拔 1,950–2,100m` / `烘焙日 2026.03.18` / `处理法 水洗·棚架日晒`; flavor chips `柑橘 · 白花 · 蜂蜜`.
-   - accent: ONE seal/stamp (a small circle + the bean glyph) in the accent color.
-4. **Texture/detail**: a bean icon (2 strokes), a stitch or foil line — small, product-specific.
-5. Frame it (§C). Telemetry strip = 3–5 real facts.
+2. **Layers** (viewBox ~`640×440`):
+   - **crimped top**: a darker band (h≈28) with ~10 thin vertical stitch lines.
+   - **bag body**: rounded rect (w≈300 h≈330 rx≈18), one flat warm-brown tone; a subtle lighter highlight on the lit edge.
+   - **label**: a centered rounded rect (w≈200 h≈150 rx≈8) in a cream surface; content centered with the display face: brand `Morrow` + `第 07 期 · 秋`, then bean line `耶加雪菲` / `日晒 · 200 g` — real data, ≤3 lines.
+   - **props**: a **brew card** peeking out behind-right (a rotated rounded rect with 3 short lines); **3 coffee beans** at the base (small ellipse + a curved seam path).
+   - **ground shadow**: a wide, soft ellipse under the bag (opacity ~0.12).
+   - **accent**: ONE element only (e.g. the bean seam or a small seal).
+3. Frame it (§C); telemetry strip = 3–5 real facts.
 
 ### Other objects/moments to reach for
 - sleep app → a phone glowing at night with a soft waveform + a crescent moon.
