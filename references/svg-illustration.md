@@ -11,7 +11,7 @@ Learned from: interface-design R1 (600×470 lattice built from rect/circle/path 
 5. Everything references design tokens (colors via `var()`, fonts via `var()`); no raw literals.
 
 ## B. Composition recipe (hero diagram)
-1. **Story** — the product's core mechanism as one visual metaphor (e.g. "one key → gateway → many model vendors").
+1. **Story** — the product's core mechanism as one visual metaphor, stated in the product's own nouns. First pick an **archetype** from `svg-hero-spec.md` §0 (hub-and-spoke / pipeline / split-contrast / metric panel / list→detail / timeline / map / layered stack) — do NOT reuse a figure that was tuned for a different brief.
 2. **Layout** — pick one: radial fan · left→right pipeline · hub-and-spoke · layered stack.
 3. **Focus** — 1–2 focal elements get the accent + larger size; demote the rest to muted.
 4. **Vocabulary** — hub card · leaf node card · connector path · port dot · label text · container frame · decorative grid. Build from `rect` / `circle` / `path` / `line` / `text` only.
@@ -35,18 +35,18 @@ Learned from: interface-design R1 (600×470 lattice built from rect/circle/path 
 ## F. Validation
 `node scripts/svgcheck.mjs <file.html>` → per-SVG audit: `viewBox`, `role`/`aria`, label count, **4-grid adherence** of geometric primitives, gradient/filter counts, icon sizes.
 
-## G. Hero lattice skeleton (adapt per product)
+## G. Hero skeleton (neutral — instantiate for the product)
 ```html
 <svg viewBox="0 0 640 400" role="img" aria-labelledby="heroT heroD" width="100%" height="auto">
-  <title id="heroT">一把钥匙经网关路由到多家模型</title>
-  <desc id="heroD">左侧应用 → 中部网关 → 右侧多个模型节点</desc>
-  <!-- frame / grid (optional), hub at x=256,y=176,w=128,h=48 -->
+  <title id="heroT">THE PRODUCT'S ONE-LINE MECHANISM</title>
+  <desc id="heroD">what the figure shows</desc>
+  <!-- focal node of the chosen archetype (x/y/size are examples, NOT a fixed spec) -->
   <rect x="256" y="176" width="128" height="48" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
-  <text x="320" y="204" text-anchor="middle" font-family="var(--font-body)" fill="var(--text)">Nimbus 网关</text>
-  <!-- leaves on a 4-grid (x=512, y=96/176/256 …), connectors from distinct ports, labels inside canvas -->
+  <text x="320" y="204" text-anchor="middle" font-family="var(--font-body)" fill="var(--text)">‹focal›</text>
+  <!-- place the archetype's stages/leaves on a 4-grid; connectors from distinct ports; labels inside canvas -->
 </svg>
 ```
-See `templates/svg-kit.md` for copy-paste primitives.
+See `templates/svg-kit.md` for copy-paste primitives (replace every placeholder with the product's nouns).
 
 ## H. Legibility & routing (v2 — from vision review of real failures)
 A diagram that can't be read at a glance has failed, even if the geometry is clean.
@@ -74,39 +74,38 @@ Measured from real failures: labels were crammed to 1–5px and off-center. Enfo
 - **Type roles stay coherent** — display face + body face should read as one system, not two unrelated styles.
 - These are scored by the VLM in `GOAL-SVG.md`; treat the VLM's TopIssues as the fix list.
 
-## K. Reference hero pattern — "3-column routing" (the method that actually looks good)
-The approved reference (interface-design R1, 600×470) is BEAUTIFUL because it is SIMPLE. Replicate this structure; it is a subtraction exercise.
+## K. Reference archetype — "hub-and-spoke" (ONE option; use only when the subject fits)
+When the subject is genuinely "one thing routes/serves/aggregates many", the cleanest form is a 3-column hub-and-spoke. Copy the **discipline**, not the nouns.
 - **One horizontal axis, three columns:**
-  - Left = source card (eyebrow + value). Ref: `x=6 w=150 h=84 rx=15`, eyebrow 11px letterspacing 1.6 muted, value 14px ink, both `text-anchor=middle`.
-  - Center = **the one focal gateway card** (accent fill @ ~9% + accent stroke). Ref: `x=206 w=180 h=104 rx=17`; title 11–13px + subtitle 13px + a 4px status dot.
-  - Right = provider list: **identical cards**, Ref `w=154 h=38 rx=11`, vertical **pitch 54** (16px gap), each = `dot(r=3.2) + name(13px)`. Name only — no sub-lines.
+  - Left = source card (eyebrow + value), both `text-anchor=middle`.
+  - Center = **the one focal hub card** (accent fill @ ~9% + accent stroke): title + short subtitle + one status dot.
+  - Right = leaf list: **identical cards**, fixed vertical pitch, each = `dot + name` only. No sub-lines.
 - **Connectors — two formulas only:**
-  - left: `M156 235 H206` (one straight line).
-  - fan: `M386 235 C 414 235, 412 <YtargetCenter>, 440 <YtargetCenter>` — **same curvature**, one per target, evenly spaced → no crossings.
-- **Text budget: ≤2 lines per node.** No capability sub-rows, no legends inside the card, no nested frames, no hatch/pattern, no SDK/key sub-boxes.
+  - into the hub: one straight `H` line.
+  - fan out: one Bézier per leaf with **identical curvature**, evenly spaced → no crossings.
+- **Text budget ≤2 lines per node.** No capability sub-rows, no legends inside the card, no nested frames, no hatch, no sub-boxes.
 - **Palette:** 1 accent (focal only), everything else surface/ink/muted. Zero gradients/filters/shadows.
-- **Primitives only**: path, rect, text, circle. Keep total shapes modest (~9–15 + one per provider).
-- **Vibe:** a tidy instrument panel. If you're tempted to add another box or another text line, DON'T — delete instead.
-- This is the default hero pattern for "one thing routes/serves many" products. Adapt counts (e.g. 5 providers), keep the discipline.
+- **Primitives only:** path, rect, text, circle. Keep total shapes modest.
+- **Vibe:** a tidy instrument panel. If tempted to add another box or another text line, DON'T — delete instead.
+For a different subject, use the matching archetype from `svg-hero-spec.md` §0 (pipeline / split-contrast / metric panel / list→detail / timeline / map / layered stack) with the same subtraction discipline.
 
-## L. Compose the diagram into a "figure frame" (this is what makes the whole thing look designed)
-The approved reference is NOT a bare SVG — it is a framed panel. The SVG is the middle layer; the top and bottom bars (hairline-separated) are what read as a polished visual.
+## L. Compose the diagram into a "figure frame"
+The diagram is not a bare SVG — it is the middle layer of a framed panel; the top/bottom bars are what read as polished. Use them **only when they carry real content** (never as placeholder chrome).
 ```
 <div class="figure">            /* panel: subtle surface + 1px border + radius 16 + padding 16; optional faint glow behind */
-  <div class="figure-top">      /* header bar: flex space-between; padding 2px 12px 12px; border-bottom 1px var(--line); margin-bottom 12 */
-     <span class="ft-label">实时路由 / Live routing</span>
-     <span class="ft-live">● ONLINE</span>   /* mono, green, gap 6, 11–12px */
+  <div class="figure-top">      /* optional header bar: flex space-between; padding 2px 12px 12px; border-bottom 1px var(--line) */
+     <span class="ft-label">‹label for what the figure shows›</span>
+     <span class="ft-live">● ‹one status›</span>   /* mono, single status accent */
   </div>
   <svg .../>                    /* the diagram (middle layer) */
-  <div class="figure-foot">     /* telemetry strip: mono 11–12px; padding-top 12; border-top 1px var(--line); margin-top 12; segments separated by · */
-     <span class="ok">● 200 OK</span> · gpt-4o · 412ms · ¥0.0031 · 命中缓存
+  <div class="figure-foot">     /* optional telemetry strip: mono 11–12px; padding-top 12; border-top 1px var(--line); segments separated by · */
+     ‹real values for THIS product: counts / dates / units / ratios›
   </div>
 </div>
-<div class="figure-cap">已接入 / Supported — OpenAI · Anthropic · Google · DeepSeek · Qwen</div>  /* optional caption strip below */
 ```
 Rules:
-- Top and bottom bars are **hairline-separated** (1px `--line`), same horizontal padding as the panel.
-- Micro-type is **mono**; the top label is muted; a single live/status accent (green dot).
+- Top/bottom bars are **hairline-separated** (1px `--line`), same horizontal padding as the panel.
+- Micro-type is **mono**; the top label is muted; a single status accent.
 - Panel = subtle surface + 1px border + radius 16; put the glow/dots/noise (`svg-decoration-motion.md`) **behind the panel**, not just behind the SVG.
-- Optional caption strip below with connected providers ("已接入 / Supported").
-- **Apply this frame to every hero illustration** — a floating bare diagram looks unfinished; a framed instrument panel looks designed.
+- Use placeholders here, then replace them with the product's real nouns/values — do not ship a placeholder.
+- Apply this frame to the hero illustration — a floating bare diagram looks unfinished; a framed instrument panel looks designed.

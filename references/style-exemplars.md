@@ -9,7 +9,7 @@ These three reference outputs were judged (by the operator) as "more correct UI"
 - **Palette:** `bg #13100b` · `surface #1d1812` / `#262019` · text `#f4ecdb` (cream) · muted `#c3b8a3` · hairline `rgba(244,236,219,.10)` · **brass `#e0a63a` / `#f2c15c`** (single accent) · ok green `#86c16b` · **parchment `#f3ebd9`** for one inset "data/rate/receipt" surface.
 - **Type:** display serif (`Fraunces`) + neutral sans body (`Instrument Sans`) + mono for data (`IBM Plex Mono`); CJK `Noto Serif SC` (headings) / `Noto Sans SC` (body).
 - **Material:** **depth by borders, not shadows** (few box-shadows, few gradients). Soft radius scale 8/14/20/28.
-- **Signature:** the product's own motif drawn literally (e.g. a key→gateway routing lattice, a live trace ledger, brass "折" stamps). Tabular numerals for all data.
+- **Signature:** the product's own motif drawn literally (whatever the product actually does — a routing lattice, a ledger trace, a receipt, a waveform…). Tabular numerals for all data.
 - **Learn:** warm temperature; one brass accent used sparingly; a parchment inset for data; restraint (this is what "correct UI" looks like — not loud).
 
 ## E2 · interface-design R2 — clean pixel (arcade, restrained)
@@ -37,7 +37,7 @@ These three reference outputs were judged (by the operator) as "more correct UI"
 ## HERO RULE (highest priority — do not violate)
 The **first screen's focal point must be a product-specific illustration/diagram drawn as inline SVG** — not a code block, not a terminal mockup, not a screenshot-of-code.
 - ❌ Do NOT put a `POST /v1/…` code/terminal card as the hero's main visual. If the brief asks for an API sample, place it **below the hero** as a secondary module (or omit it from the first screen).
-- ✅ The hero visual: one substantial, polished SVG that dramatizes the product's core mechanism (E1's exemplar = a "one key → gateway → many model nodes" routing lattice). It must be detailed and finished, not a grey placeholder of 3 circles.
+- ✅ The hero visual: one substantial, polished SVG that dramatizes **this** product's core mechanism, chosen via the archetype table in `svg-hero-spec.md` §0 (the exemplar's routing lattice is just ONE instantiation — do not copy its nouns to other products). It must be detailed and finished, not a grey placeholder of 3 circles.
 - ✅ Use imagery generously: the exemplar used **~19 inline SVGs** across the page (icons, diagrams, motifs). Aim for a similar density; prefer SVG illustration/iconography over code blocks and over empty space.
 - ✅ Balance the hero: illustration and copy should feel weighted; avoid a heavy card on one side and dead whitespace on the other.
 - Measured by `dscheck.mjs` gate `heroImagery` (`heroSvg ≥ 1` and `heroPre === 0`).

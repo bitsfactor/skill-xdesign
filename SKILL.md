@@ -68,12 +68,13 @@ Details: `references/system-memory.md`, templates: `templates/system.md`, `templ
 - `references/harness.md` — measurement pipeline (dscheck/browser/bench/measure) & improvement loop
 - `references/style-exemplars.md` — style north-star: learn from interface-design (E1/E2) & huashu-design (E3)
 - `references/svg-illustration.md` — how to draw high-quality hero SVG illustrations (geometry, primitives, anti-slop) + `templates/svg-kit.md`
+- `references/svg-hero-spec.md` — **general hero-figure method**: pick an archetype from the product's own subject (hub-and-spoke / pipeline / split-contrast / metric / list→detail / timeline / map / stack), plus construction, scale-coupling and bounded-density rules
 - `references/svg-decoration-motion.md` — decorative depth (glow/grain/volumetric) + motion (flow/draw-in/parallax) recipes + `templates/svg-motion-kit.md`
 - `references/svg-top-projects.md` — hard rules distilled from the top-starred SVG/diagram projects (spacing, centering, z-order, hero checklist)
 
 ## Style north-star (read `references/style-exemplars.md`)
-Beyond being systematic, bias the **visual style** toward the judged-good references:
-- **Non-pixel → E1** interface-design R1「Ink & Brass」: warm dark ground, one brass accent, border-led depth (few shadows/gradients), a single parchment inset data surface, serif+sans+mono roles, tabular numerals, a product-specific signature motif.
+These bias the **visual style**, but the brief's world + Phase-2 intent decide the direction — E1 is a sensible default for non-pixel work, **not a mandate** (a coffee shop, a sleep app and a B2B SaaS should not all look identical). Whatever the direction:
+- **Non-pixel (default → E1)** interface-design R1「Ink & Brass」: warm dark ground, one brass accent, border-led depth (few shadows/gradients), a single parchment inset data surface, serif+sans+mono roles, tabular numerals, a product-specific signature motif.
 - **Pixel → E3** huashu-design R2: **gold-led** multi-hue palette, **`ZCOOL QingKe HuangYou` for Chinese display**, hard 1:1 shadows + crispEdges (E2 is the more restrained fallback).
 
 ## Non-goals
