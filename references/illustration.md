@@ -9,8 +9,8 @@ A good page is **one visual world**, and it is **illustration-rich**: a big hand
 2. **Pick 3–5 artifacts** to illustrate: the **main** one + 2–4 **supporting** ones.
 3. **Assign artifacts to sections, big → small** (the rhythm that reads as "designed"):
    - **Hero**: headline + lede + CTA + the **main artifact** (largest SVG, ~half the hero).
-   - **Section 2** (diptych; art one side, a spec list the other): a **supporting artifact**.
-   - **Section 3** (features): 3 short columns, each with a **small line-icon** from the world.
+   - **2–4 substance sections** (diptych: art one side, copy/spec the other) — each carries **its own artifact**: for an **app**, a **different screen mockup per section** (report · mixer · breathing · stories); for a product, a detail/label card.
+   - **Features** (optional): 3 short columns, each with a **small line-icon** from the world.
    - **Section 4** (proof): a pull-quote; optional tiny motif.
    - **Footer**: a short sign-off.
 4. **One palette + 3 type roles**: paper/ink + ≤2 accents; display (serif) / body (sans) / mono (data). Everything tokenized.
