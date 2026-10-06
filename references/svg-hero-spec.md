@@ -42,3 +42,20 @@ SVG `font-size`/coords are in **user units**; the browser scales the whole SVG t
 3. **Headline highlight**: `display:inline-block` wrapping only the text; real `text-decoration` + `text-underline-offset ≥ .22em`, `text-decoration-skip-ink:none`; never `display:block` (underline then spans the whole line).
 4. **CJK body/lead**: `line-break:strict; word-break:keep-all; text-wrap:pretty`, plus `<wbr>` at phrase boundaries — break only at spaces/punctuation/`<wbr>`.
 5. **Inline list separators** must be attached to the item (`li::before`, or `span + span::before`); container `display:flex; align-items:baseline`; never standalone `.sep` nodes (they orphan on wrap).
+
+## Hero weight — BOUNDED (lower bound AND upper bound)
+Single-judge scores oscillate: too-empty (x9) ↔ too-dense/debug-panel (x10). Both bounds must hold:
+- **Lower bound (don't be weak):**
+  (a) node-area-weighted centroid within 0.08 of viewBox center;
+  (b) no empty quadrant with edge ≥ 25% of viewBox — fill with a **real-data** card (request/policy), never decoration;
+  (c) each leaf node carries `label + one data value` (latency/price); name **≥15px, contrast ≥7:1** using `--text-soft` (not muted);
+  (d) main path line **≥3px**, spanning source→gateway→target; secondary lines ≥1.5px;
+  (e) at 1440, figure-card area / copy-block area **≥ 1.4**.
+- **Upper bound (don't be a debug panel):**
+  (f) auxiliary labels are the minority — keep total in-figure `<text>` to **≤ ~14 items**; ONE header row (not APP/GATEWAY/PROVIDERS + Live routing + ONLINE all at once); ONE status strip;
+  (g) exactly ONE strong element (the highlighted main path + its target node + one value); everything else muted;
+  (h) no element should be a "12px low-contrast mono" — either it is real data ≥13px or it is cut.
+If a change fixes "too empty" by adding chrome, and the next review says "too dense," you have crossed the upper bound — remove chrome, don't add more.
+
+## Judge protocol note
+Do NOT tune on a single model's 1–10 score (it oscillates). Decide keep/reject with the **battery** (`pairwise.mjs`: 3 judges × both orders) per `docs/evaluation.md`.
