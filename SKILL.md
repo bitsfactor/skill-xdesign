@@ -8,7 +8,7 @@ description: A repeatable method (Analyze → Ideate → Draw) for designing web
 Three things carry xdesign, **in this order**:
 0. **NO VISUAL BUGS — our first principle.** Geometry must be correct: every `<text>` fits its node and is centered, nothing overlaps, same-tier nodes are equal with even gaps, everything sits on the 4px grid, no page overflow, hero text ≥13px. **A build is not done until the geometry audit (`references/verify.md`) returns 0 bugs at 320/375/768/1280.** Token discipline is necessary but NOT sufficient — it governs *where values come from*, not *whether the geometry is right*.
 1. **A strict token backbone** — every value is a token; spacing/type/color quantized. (`references/tokens.md`)
-2. **A literal, illustration-rich hero** — a drawn object from the product's world, not a flow-chart. (`references/illustration.md`)
+2. **A literal, illustration-rich hero** — a drawn object from the product's world, not a flow-chart. (`references/illustration.md`) **Default to a LIGHT theme** (warm paper + ink); near-black + neon reads as "AI" — use dark only when the product is inherently dark (a night/sleep app).
 
 ## Phase 1 · Analyze the brief
 1. **Who / task / feel** — the real user; the verb they must accomplish; the feeling (real words, not "modern").
@@ -29,7 +29,8 @@ Only for a genuinely abstract product (API, platform) use a **diagram** grammar 
 
 ## Phase 3 · Draw
 **0 · Tokens & normalization (our backbone — do this FIRST).** Write the token block at `:root` (colors primitive→semantic, one space scale, one radius scale, a fixed type-step set, ≤3 font families in roles, ≤2 shadows, one easing). **No raw value outside `:root`.** Full spec + the copy-paste block: **`references/tokens.md`**. Do not proceed until the block exists.
-**1 · Illustrate the product's objects with flat SVG** (`references/illustration.md`). Each object = **4 parts + props**: ground-shadow ellipse · body (filled path/rect **+ a darker stroke** = silhouette) · ONE defining feature (bag: crimp band + ridges; cup: handle + steam; card: chips + rule rows) · a lighter label with **real data**; plus 1–3 prop glyphs. **No gradients.** Use them across sections (hero = main artifact).
+**1 · Illustrate the product's objects with flat SVG** (`references/illustration.md`). Each object = **4 parts + props**: ground-shadow ellipse · body (filled path/rect **+ a darker stroke** = silhouette) · ONE defining feature (bag: crimp band + ridges; cup: handle + steam; card: chips + rule rows) · a lighter label with **real data**; plus 1–3 prop glyphs. **No gradients.** Hero pattern by product type: **app → a device mockup of the REAL screen** (+ floating chips); **physical → object + a tilted card + a status tag + props**; **abstract → a light console/diagram**. Keep figure text **small and refined (10–15px)** — it must never dominate.
+**2 · Motion — animate the mechanism** (`references/motion.md`): `beat` (pulse dot) · `travel` (packet on a connector) · `dash` (marching SVG dashes) · `sweep` (bar highlight) · `sheet` (entrance). ≤2 loops per figure; subtle; always under `prefers-reduced-motion`.
 **2 · Compose** — the object is the focal and heaviest element; optional frame (panel + hairline top bar + a telemetry strip of real facts); fill ~85%; no empty quadrant; hero text ≥13px **rendered**.
 **3 · Craft rules** — 4px grid; hierarchy by weight + color; ≤3 fonts in roles; every value a token (`var()`); text contrast ≥4.5:1; `role="img"` + `aria-labelledby`; decorative → `aria-hidden`; motion respects `prefers-reduced-motion`.
 **4 · Robustness** — no horizontal overflow at 320/375/768/1280; touch targets ≥44px; working mobile nav; anchors not hidden behind a sticky header.

@@ -42,6 +42,17 @@ Each section composes a few of these — this is how you get *more* SVG without 
 - B2B audit SaaS → document stack + accent seal + checklist row.
 - bakery/food → box or loaf + a torn label + 2–3 crumb dots.
 
+## B2. Hero patterns — what to draw (by product type)
+- **App / software** → a **device or window mockup showing the app's REAL screen** (real data: a score, a chart, rows) **+ 1–2 floating chips**. (A sleep app = a phone with the sleep report.)
+- **Physical product** → the object **+ a secondary card** (a tilted label / recipe card overlapping it) **+ a small status tag** + 2–3 scattered props + ground shadow.
+- **Abstract (API / platform)** → a **console / diagram with real data** — and keep it **light + refined** (see §E), not a neon "AI" dark UI.
+Richer reads better: object + secondary card + tag + props, generous whitespace, ONE accent.
+
+## B3. Figure type scale — small and refined (秀气)
+Text INSIDE the figure must be **small and precise**, never big. Big display type belongs to the page headline.
+- labels / eyebrows / pills **10–12px** · node names **12.5–14px** · values **13–15px** · figure brand **≤ 22px** · hairlines 1px · tabular numerals for data.
+- Prefer **more small, well-spaced lines** over a few big ones. Figure text must never dominate.
+
 ## E. Diagrams (ONLY when the product has no physical object)
 hub-and-spoke (focal hub + identical leaves + one accent path, no crossings) · pipeline · split-contrast · metric · list→detail · timeline. Same discipline: one accent, real values, fill the frame, ≤2 text lines per node.
 

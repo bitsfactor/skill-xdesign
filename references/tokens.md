@@ -2,17 +2,19 @@
 
 **One rule matters more than all others: everything references a token; no raw values outside `:root`.** This is what makes our pages align on the first try and eliminates misalignment, overlap, spacing and font bugs.
 
+**Default to a LIGHT theme.** Warm paper + ink reads as designed; near-black + neon reads as "AI". Use dark only when the product is inherently dark (a night/sleep app, a cinema, a game).
+
 ## The token block (define this FIRST, before any component)
 ```css
 :root{
-  /* color: primitives -> semantic (use YOUR palette; keep the layering) */
-  --ink-900:#141210; --ink-800:#1c1916; --ink-700:#26221d;
-  --cream-100:#f4ecdb; --cream-300:#c3b8a3; --cream-500:#8f836f;
-  --clay-400:#b98a5e; --clay-600:#7a5230; --leaf-500:#7ea86a;
-  --bg:var(--ink-900); --surface:var(--ink-800); --surface-2:var(--ink-700);
-  --text:var(--cream-100); --text-muted:var(--cream-300); --text-dim:var(--cream-500);
-  --border:rgba(244,236,219,.10); --border-strong:rgba(244,236,219,.22);
-  --accent:var(--clay-400); --accent-ink:#141210; --ok:var(--leaf-500);
+  /* color: primitives -> semantic (LIGHT default; use YOUR palette, keep the layering) */
+  --paper:#faf7f1; --paper-2:#f2ece1; --card:#ffffff;
+  --ink-900:#1c1a17; --ink-600:#4a463f; --ink-400:#8a8377;
+  --clay-500:#b06a3b; --clay-600:#8f5530; --leaf-600:#4f7a54;
+  --bg:var(--paper); --surface:var(--card); --surface-2:var(--paper-2);
+  --text:var(--ink-900); --text-muted:var(--ink-600); --text-dim:var(--ink-400);
+  --border:rgba(28,26,23,.10); --border-strong:rgba(28,26,23,.20);
+  --accent:var(--clay-500); --accent-ink:#ffffff; --ok:var(--leaf-600);
 
   /* space — ONE scale, 4px base */
   --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
