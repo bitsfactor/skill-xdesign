@@ -74,20 +74,16 @@ Measured from real failures: labels were crammed to 1–5px and off-center. Enfo
 - **Type roles stay coherent** — display face + body face should read as one system, not two unrelated styles.
 - These are scored by the VLM in `GOAL-SVG.md`; treat the VLM's TopIssues as the fix list.
 
-## K. Reference archetype — "hub-and-spoke" (ONE option; use only when the subject fits)
-When the subject is genuinely "one thing routes/serves/aggregates many", the cleanest form is a 3-column hub-and-spoke. Copy the **discipline**, not the nouns.
-- **One horizontal axis, three columns:**
-  - Left = source card (eyebrow + value), both `text-anchor=middle`.
-  - Center = **the one focal hub card** (accent fill @ ~9% + accent stroke): title + short subtitle + one status dot.
-  - Right = leaf list: **identical cards**, fixed vertical pitch, each = `dot + name` only. No sub-lines.
-- **Connectors — two formulas only:**
-  - into the hub: one straight `H` line.
-  - fan out: one Bézier per leaf with **identical curvature**, evenly spaced → no crossings.
-- **Text budget ≤2 lines per node.** No capability sub-rows, no legends inside the card, no nested frames, no hatch, no sub-boxes.
-- **Palette:** 1 accent (focal only), everything else surface/ink/muted. Zero gradients/filters/shadows.
-- **Primitives only:** path, rect, text, circle. Keep total shapes modest.
-- **Vibe:** a tidy instrument panel. If tempted to add another box or another text line, DON'T — delete instead.
-For a different subject, use the matching archetype from `svg-hero-spec.md` §0 (pipeline / split-contrast / metric panel / list→detail / timeline / map / layered stack) with the same subtraction discipline.
+## K. Worked grammar — hub-and-spoke (concrete recipe; swap the nouns)
+Default figure shape for "one focal thing served / selected / routed among many" (see `svg-hero-spec.md` §0–2 for the analysis process). Proportions for a `640×400` viewBox:
+- **Columns**: source `x≈24`, hub center `x≈320`, leaves `x≈490`.
+- **Source** (left): 1–2 stacked cards `w≈136 h≈80 rx=14`; each = eyebrow (mono 12, muted) + value (display ~18), text centered.
+- **Hub** (center, FOCAL): one card `w≈168 h≈104 rx=18`; fill = accent ~12% + accent stroke 2; title (display ~20) + subtitle (sans 14, muted) + one status dot (r=3, accent).
+- **Leaves** (right): 3–5 **identical** cards `w≈150 h≈40 rx=10`, vertical **pitch 54**; each = `dot(r=3) + name(14) + right-aligned value (mono 13)`. One value per leaf; no sub-lines.
+- **Connectors**: (1) source→hub = ONE gentle Bézier (control offset ~40%), accent, 2–3px. (2) hub→leaf fan = identical curvature each, order-preserving (top↔top) so lines **never cross**, muted 1–1.5px; the active leaf's path is accent.
+- **Frame**: top bar (short label + one live status) + bottom telemetry strip (3–5 **real** facts). See §L.
+- **Balance**: fill ~85% of the canvas; leaves column height ≈ source column height; hub clearly the heaviest element.
+Copy this **discipline and proportions**; replace every noun/value with the product's own. Other grammars (pipeline / split-contrast / metric / list→detail / timeline) and the full method: `svg-hero-spec.md` §1.
 
 ## L. Compose the diagram into a "figure frame"
 The diagram is not a bare SVG — it is the middle layer of a framed panel; the top/bottom bars are what read as polished. Use them **only when they carry real content** (never as placeholder chrome).
