@@ -1,82 +1,43 @@
 ---
 name: xdesign
-description: 以「设计系统」为核心的前端/产品界面设计方法与执行框架。Use when building or redesigning web UI (pages, dashboards, marketing sites, components, settings, forms, empty states), when the user wants a coherent, systematic, low-bug design, when they ask to follow a design system / tokens / style guide, when generating a design-system artifact (system.md / design.md / tokens.css), when they want multiple distinct style directions proposed first, or when they explicitly invoke xdesign or a pixel/retro theme. Emphasizes systematic consistency, token discipline, accessibility, and layout robustness over one-off visual flair.
+description: A repeatable 3-phase method (Analyze → Ideate → Draw) for designing web pages/UI and their hero figure, so the result is systematic, accessible, and robust. Use when building or redesigning a page, dashboard, landing page, component, or an SVG hero/diagram. The output of this skill is the PROCESS below.
 ---
 
-# xdesign
+# xdesign — design by method, not by vibes
 
-Build interfaces that are **systematic, accessible, and hard to break** — not just pretty.
-xdesign is a design-system-first method: intent → memory (system.md) → tokens → build → **deterministic gates** → persist.
-It fuses three proven approaches: craft & design-system memory (interface-design), enforced token discipline + gates (hallmark), and multi-direction + pixel aesthetics (huashu-design).
+A page made with this method should beat the same model prompting with no method. Three phases; do not skip 1–2.
 
-## Core principles (read first)
-1. **Systematic by default.** A decision made once becomes a token and lives in `system.md`. New work *matches the system*; it does not reinvent it.
-2. **No raw values, ever.** Every color, spacing, radius, font and size references a named token. If a value is needed that isn't a token, **lift it into the token block first**, then use it.
-3. **Consistency beats novelty within a project.** Variety happens only when *choosing a direction* (Phase 2). After that, hold the line.
-4. **Gates are law.** A build is not done until `references/gates.md` + the checker pass. Fix, don't ship.
-5. **Intent must be systemic.** If you say "warm", then surfaces, text, borders, accents, type — all warm. No "it's common" justifications.
+## Phase 1 · Analyze the brief
+Write these, briefly:
+1. **Who / task / feel** — the real user; the verb they must accomplish; the feeling (real words, not "modern").
+2. **Core mechanism** — ONE sentence: what the product actually does (the recurring action, not marketing).
+3. **Must communicate (≤3)** — the three things the first screen must land.
+4. **Constraints** — brand, must-keep, platform, language (default Chinese primary).
+If the brief is vague: ask ONE question, or state an assumption and proceed.
 
-## Workflow (7 phases)
+## Phase 2 · Ideate the concept (step by step)
+1. **Roles** — list the concrete nouns the mechanism implies: the focal thing, its source/trigger, the set it comes from, a number/value, a sequence, a place.
+2. **Figure grammar** — pick ONE (default **hub-and-spoke**):
+   hub-and-spoke (one focal among many) · pipeline (ordered stages) · split-contrast (before/after) · metric panel (numbers/trend) · list→detail (a catalogue) · timeline (over time).
+3. **Map** — assign the product's REAL nouns/values to the grammar's slots (source→hub→leaf, stage→stage…). Every slot filled with a real noun.
+4. **Focal** — choose the ONE element that gets the accent; everything else is muted.
+5. **Concept in words first** — write one paragraph describing the figure as a picture ("a plan card feeds a focal bean card, which fans out to four origins with altitudes…"). If the words aren't clear, the SVG won't be.
+6. **Direction** — choose a palette + 2–3 type faces from the brief's world; write them as tokens. Hold one direction.
 
-### 0 · Pre-flight scan (preserve before you invent)
-Read the project first: framework, existing `system.md` / `design.md` / `tokens.css` / DTCG files, font stack, spacing scale, motion stance.
-- If a system exists → **read it and defer to it**. Do not overwrite existing tokens.
-- State findings briefly, then proceed.
-Details: `references/system-memory.md`.
+## Phase 3 · Draw (constraints & techniques)
+**Layout** — 4px grid; one focal point per view; hierarchy by weight + color (not size alone); decided density; 60/30/10; consistent radii/space tokens.
+**Hero figure** — exact construction in `references/figure-recipes.md`. Essentials: one accent; focal clearly the heaviest; ≤2 text lines per node; each leaf carries a real value; fill ~85% of the frame; no empty quadrant; connectors never cross; hero text ≥13px **rendered**; wrap it in a frame (subtle panel + hairline top bar [label + one live status] + telemetry strip [3–5 real facts]).
+**SVG** — rect/circle/path/text only; coords on the 4-grid; colors/fonts via tokens (`var()`); `role="img"` + `aria-labelledby`; decorative → `aria-hidden`; optional draw-in motion that respects `prefers-reduced-motion`.
+**Type / color** — ≤3 families in roles (display / body / mono); every value a token; text contrast ≥ 4.5:1.
+**Robustness** — no horizontal overflow at 320/375/768/1280; touch targets ≥ 44px; a working mobile nav; reduced-motion honored; anchors not hidden behind a sticky header.
+**Anti-slop** — no emoji / raster / clipart in the hero; no gradient-on-everything; no "3 grey circles" placeholder; no duplicated content; no decorative texture behind text.
 
-### 1 · Intent (who / task / feel)
-Answer compactly: the actual person, the verb they must accomplish, and what it should *feel* like (in real words, not "modern"). If the brief is too vague, ask ONE concise question; otherwise state an assumption and proceed.
-Details: `references/intent-and-craft.md`.
-
-### 2 · Memory or Directions
-- If `system.md` exists → the system is decided; skip to Phase 3.
-- If not → propose **2–3 categorically different directions** (from `references/themes/catalog.md` or a custom theme), each with palette / type / layout sketch. Let the user pick (or pick the strongest if autonomous), then **write `system.md`**.
-Details: `references/directions.md`, `references/themes/catalog.md`.
-
-### 3 · Tokens (define the system)
-Establish the token taxonomy: color (primitive → semantic → component), spacing (4/8 base), type scale (ratio), radius, elevation, motion.
-Hard rule: keystone tokens are referenced by name everywhere downstream.
-Details: `references/token-architecture.md`, templates: `templates/tokens.css`.
-
-### 4 · Build
-Apply craft: one focal point per view, type-ratio hierarchy (weight+color, not size alone), decided density, uneven spatial rhythm, 60/30/10 color, subtle layered elevation, optical sizing.
-Use existing components/tokens before hand-rolling. Extract on second reuse.
-Details: `references/intent-and-craft.md`.
-**Pixel/retro briefs**: load `references/themes/pixel.md`.
-
-### 5 · Gates + Checker (not done until green)
-Run the deterministic checks and fix every failure:
-- static: `node scripts/dscheck.mjs <file.html>` (raw values, off-grid spacing, font families, `!important`)
-- layout/a11y: overflow at 320/375/768/1280 + axe-core (via the Playwright MCP), saved to a metrics JSON
-- score: `node scripts/measure.mjs <dscheck.json> [browser-metrics.json]`
-Details: `references/gates.md`.
-
-### 6 · Persist
-- Write/update `system.md` with newly decided patterns and decisions (record the *why*).
-- Optionally emit a portable `design.md` (DTCG-flavored) and updated `tokens.css`.
-Details: `references/system-memory.md`, templates: `templates/system.md`, `templates/design.md`.
-
-## Reference index
-- `references/intent-and-craft.md` — hierarchy, density, rhythm, layering, craft rules
-- `references/token-architecture.md` — token taxonomy + the "no raw values" rule
-- `references/system-memory.md` — system.md format, drift/consistency checks
-- `references/gates.md` — deterministic gates + checker usage
-- `references/directions.md` — propose 2–3 directions, then commit
-- `references/study.md` — extract DNA from a URL/screenshot into design.md
-- `references/themes/catalog.md` — starter theme catalog
-- `references/themes/pixel.md` — pixel/8-bit mode (CJK-aware)
-- `references/harness.md` — measurement pipeline (dscheck/browser/bench/measure) & improvement loop
-- `references/style-exemplars.md` — style north-star: learn from interface-design (E1/E2) & huashu-design (E3)
-- `references/svg-illustration.md` — how to draw high-quality hero SVG illustrations (geometry, primitives, anti-slop) + `templates/svg-kit.md`
-- `references/svg-hero-spec.md` — **general hero-figure method**: pick an archetype from the product's own subject (hub-and-spoke / pipeline / split-contrast / metric / list→detail / timeline / map / stack), plus construction, scale-coupling and bounded-density rules
-- `references/svg-decoration-motion.md` — decorative depth (glow/grain/volumetric) + motion (flow/draw-in/parallax) recipes + `templates/svg-motion-kit.md`
-- `references/svg-top-projects.md` — hard rules distilled from the top-starred SVG/diagram projects (spacing, centering, z-order, hero checklist)
-
-## Style north-star (read `references/style-exemplars.md`)
-These bias the **visual style**, but the brief's world + Phase-2 intent decide the direction — E1 is a sensible default for non-pixel work, **not a mandate** (a coffee shop, a sleep app and a B2B SaaS should not all look identical). Whatever the direction:
-- **Non-pixel (default → E1)** interface-design R1「Ink & Brass」: warm dark ground, one brass accent, border-led depth (few shadows/gradients), a single parchment inset data surface, serif+sans+mono roles, tabular numerals, a product-specific signature motif.
-- **Pixel → E3** huashu-design R2: **gold-led** multi-hue palette, **`ZCOOL QingKe HuangYou` for Chinese display**, hard 1:1 shadows + crispEdges (E2 is the more restrained fallback).
+## Self-check (before "done")
+- [ ] Phase 1 answered in writing; the figure depicts the core mechanism with the product's own nouns.
+- [ ] One focal; one accent; each leaf has a real value; ≤2 lines per node.
+- [ ] Rendered hero text ≥13px; `scale = renderedWidth/viewBoxWidth ∈ [0.95, 1.05]` at 320/375/768/1280.
+- [ ] No overflow at 320/375/768/1280; contrast ≥4.5; reduced-motion; mobile nav works.
+- [ ] No raw values (all via tokens); ≤3 font families; no `!important`.
 
 ## Non-goals
-- Not for backend/non-UI work.
-- Not for "just make it pop" with no system: if there is no system, build one first (Phase 2–3).
+Backend/non-UI work; or "just make it pop" with no brief/system.
