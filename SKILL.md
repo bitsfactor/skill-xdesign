@@ -5,9 +5,10 @@ description: A repeatable method (Analyze → Ideate → Draw) for designing web
 
 # xdesign — design by method, not by vibes
 
-Two things carry xdesign:
-1. **A strict token backbone** — every value is a token, spacing/type/color are quantized → no misalignment, overlap, spacing or font bugs. This is our edge; never drop it.
-2. **A literal, illustration-rich hero** — a drawn object from the product's world, not a flow-chart.
+Three things carry xdesign, **in this order**:
+0. **NO VISUAL BUGS — our first principle.** Geometry must be correct: every `<text>` fits its node and is centered, nothing overlaps, same-tier nodes are equal with even gaps, everything sits on the 4px grid, no page overflow, hero text ≥13px. **A build is not done until the geometry audit (`references/verify.md`) returns 0 bugs at 320/375/768/1280.** Token discipline is necessary but NOT sufficient — it governs *where values come from*, not *whether the geometry is right*.
+1. **A strict token backbone** — every value is a token; spacing/type/color quantized. (`references/tokens.md`)
+2. **A literal, illustration-rich hero** — a drawn object from the product's world, not a flow-chart. (`references/illustration.md`)
 
 ## Phase 1 · Analyze the brief
 1. **Who / task / feel** — the real user; the verb they must accomplish; the feeling (real words, not "modern").
@@ -33,9 +34,11 @@ Only for a genuinely abstract product (API, platform) use a **diagram** grammar 
 **3 · Craft rules** — 4px grid; hierarchy by weight + color; ≤3 fonts in roles; every value a token (`var()`); text contrast ≥4.5:1; `role="img"` + `aria-labelledby`; decorative → `aria-hidden`; motion respects `prefers-reduced-motion`.
 **4 · Robustness** — no horizontal overflow at 320/375/768/1280; touch targets ≥44px; working mobile nav; anchors not hidden behind a sticky header.
 **5 · Anti-slop** — no emoji / raster / clipart; no gradient-on-everything; no "3 grey circles" placeholder; no box-and-line diagram for a physical product; no decorative texture behind text.
+**6 · VERIFY — mandatory, not optional.** Run the geometry-audit snippet in **`references/verify.md`** in the browser at 320/375/768/1280 and **fix every reported bug; repeat until 0.** A build with any visual bug is a failed build.
 
 ## Self-check (before "done")
-- [ ] **Token backbone exists; no raw hex/px outside `:root`** (except `0`, `1px`, `100%`, `auto`); spacing from the scale; ≤3 fonts from the steps.
+- [ ] **Geometry audit (`references/verify.md`) returns 0 bugs at 320/375/768/1280.**
+- [ ] Token backbone exists; no raw hex/px outside `:root` (except `0`, `1px`, `100%`, `auto`); spacing from the scale; ≤3 fonts from the steps.
 - [ ] Phase 1 answered; the hero is a **literal image of the product's world**, carrying real data (not a flowchart).
 - [ ] One focal; one accent; rendered hero text ≥13px; `scale = renderedWidth/viewBoxWidth ∈ [0.95,1.05]` at 320/375/768/1280.
 - [ ] No overflow 320–1280; body contrast ≥4.5; reduced-motion; mobile nav works; no `!important`.
