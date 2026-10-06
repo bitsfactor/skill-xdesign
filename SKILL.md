@@ -1,43 +1,44 @@
 ---
 name: xdesign
-description: A repeatable method (Analyze → Ideate → Draw) for designing web pages/UI and their hero image, so the result is concrete, systematic, and robust — better than prompting the model with no method. Use when building or redesigning any page, landing page, dashboard, component, or hero illustration/diagram. The output of this skill is the PROCESS below.
+description: A repeatable method (Analyze → Ideate → Draw) for designing web pages/UI and their hero image, built on a strict design-token backbone so the result is systematic, aligned, and bug-free — better than prompting the model with no method. Use when building or redesigning any page, landing page, dashboard, component, or illustration. The output of this skill is the PROCESS below.
 ---
 
 # xdesign — design by method, not by vibes
 
-The hero is **a picture of the product**, not a flow-chart. For a physical/experiential product the hero must be a **literal illustration of an object or a moment from the product's world** (a coffee bag, a cup, a phone at night). Use an abstract diagram **only** when the product itself is abstract (an API, a platform with no physical referent).
+Two things carry xdesign:
+1. **A strict token backbone** — every value is a token, spacing/type/color are quantized → no misalignment, overlap, spacing or font bugs. This is our edge; never drop it.
+2. **A literal, illustration-rich hero** — a drawn object from the product's world, not a flow-chart.
 
 ## Phase 1 · Analyze the brief
-Write these, briefly:
 1. **Who / task / feel** — the real user; the verb they must accomplish; the feeling (real words, not "modern").
 2. **Core mechanism** — ONE sentence: what the product actually does.
-3. **The product's world** — list 3–6 concrete things from the product's real world: physical objects, the moment of use, the artifact it produces. (coffee → 咖啡袋、滤杯、手冲、冲煮卡、清晨的杯子。sleep app → 床、波形、月亮、耳机的光。B2B audit → 文档、印章、清单。)
+3. **The product's world** — 3–6 concrete things: physical objects, the moment of use, the artifact it produces. (coffee → 咖啡袋、滤杯、冲煮卡、清晨的杯子; sleep app → 床、波形、月亮; B2B audit → 文档、印章、清单.)
 4. **Must communicate (≤3)** — the three things the first screen must land.
 5. **Constraints** — brand, must-keep, platform, language (default Chinese primary).
 If the brief is vague: ask ONE question, or state an assumption and proceed.
 
 ## Phase 2 · Ideate the hero image (step by step)
-1. **Candidate subjects** — from the world list, pick 2–3 things that could carry the hero as a **literal image** (an object or a scene) — NOT a chart.
-2. **Choose** the most evocative **and** most drawable one. Prefer the product's **iconic object** (e.g., 咖啡袋 + 它的标签).
-3. **Give it a twist** that adds meaning (the bag presented as a specimen label; the cup as a sunrise; the phone glowing at 2am).
-4. **Put REAL data on it** — origin, altitude, roast date, price, count, the user's name… The object carries the facts.
+1. **Candidate subjects** — from the world list, pick 2–3 that could carry the hero as a **literal image** (an object/scene), NEVER a chart.
+2. **Choose** the most evocative **and** most drawable; prefer the product's **iconic object** (e.g. 咖啡袋 + 标签).
+3. **A twist** that adds meaning (the bag as a specimen label; the cup as a sunrise; the phone glowing at 2am).
+4. **Put REAL data on it** (origin, altitude, date, price, count…) — the object carries the facts.
 5. **Write the concept as a picture** in one paragraph. If you can't picture it, it isn't a concept yet.
-6. **Direction** — palette + 2–3 type faces from the product's world; write them as tokens. Hold one direction.
-Only if the product is genuinely abstract (an API gateway, a data platform) use a **diagram** grammar instead — see `references/figure-recipes.md` §B.
+6. **Plan the artifacts across sections** — hero = the main object; a following section = a supporting object; features = small line-icons. (Page rhythm + SVG craft: `references/illustration.md`.)
+Only for a genuinely abstract product (API, platform) use a **diagram** grammar instead (`references/illustration.md` §E).
 
-## Phase 3 · Draw (constraints & techniques)
-**Illustrate the product's real objects with flat SVG** (details + examples in `references/figure-recipes.md`). Build each object from **4 parts + props**: (1) a soft ground-shadow ellipse; (2) the body as a filled path/rect **+ a stroke in a darker shade** (the silhouette); (3) ONE defining feature (bag → crimp band + ridge lines; cup → handle + steam; card → chips + rule rows); (4) a lighter label/face carrying **real data**; plus 1–3 small **prop glyphs** (beans, crumbs). **No gradients.** Draw them **across sections**: the hero shows the main artifact, a following section shows a supporting artifact (same style/palette).
-**Composition** — the object is the focal and is the heaviest element; sit it in a framed panel (subtle surface + 1px border + radius; optional hairline top bar [label + one live status] + a telemetry strip of 3–5 real facts). Fill ~85%; no empty quadrant; hero text ≥13px **rendered**.
-**Craft rules** — 4px grid; hierarchy by weight + color (not size alone); ≤3 fonts in roles (display/body/mono); every value a token (`var()`); text contrast ≥4.5:1; `role="img"` + `aria-labelledby`; decorative bits `aria-hidden`; optional motion that respects `prefers-reduced-motion`.
-**Robustness** — no horizontal overflow at 320/375/768/1280; touch targets ≥44px; working mobile nav; anchors not hidden behind a sticky header.
-**Anti-slop** — no emoji / raster / clipart; no gradient-on-everything; no "3 grey circles" placeholder; **no box-and-line diagram standing in for a physical product**; no decorative texture behind text.
+## Phase 3 · Draw
+**0 · Tokens & normalization (our backbone — do this FIRST).** Write the token block at `:root` (colors primitive→semantic, one space scale, one radius scale, a fixed type-step set, ≤3 font families in roles, ≤2 shadows, one easing). **No raw value outside `:root`.** Full spec + the copy-paste block: **`references/tokens.md`**. Do not proceed until the block exists.
+**1 · Illustrate the product's objects with flat SVG** (`references/illustration.md`). Each object = **4 parts + props**: ground-shadow ellipse · body (filled path/rect **+ a darker stroke** = silhouette) · ONE defining feature (bag: crimp band + ridges; cup: handle + steam; card: chips + rule rows) · a lighter label with **real data**; plus 1–3 prop glyphs. **No gradients.** Use them across sections (hero = main artifact).
+**2 · Compose** — the object is the focal and heaviest element; optional frame (panel + hairline top bar + a telemetry strip of real facts); fill ~85%; no empty quadrant; hero text ≥13px **rendered**.
+**3 · Craft rules** — 4px grid; hierarchy by weight + color; ≤3 fonts in roles; every value a token (`var()`); text contrast ≥4.5:1; `role="img"` + `aria-labelledby`; decorative → `aria-hidden`; motion respects `prefers-reduced-motion`.
+**4 · Robustness** — no horizontal overflow at 320/375/768/1280; touch targets ≥44px; working mobile nav; anchors not hidden behind a sticky header.
+**5 · Anti-slop** — no emoji / raster / clipart; no gradient-on-everything; no "3 grey circles" placeholder; no box-and-line diagram for a physical product; no decorative texture behind text.
 
 ## Self-check (before "done")
-- [ ] Phase 1 answered; the hero is a **literal image of the product's world**, carrying real data.
-- [ ] It's a picture, not a flowchart (unless the product is abstract).
+- [ ] **Token backbone exists; no raw hex/px outside `:root`** (except `0`, `1px`, `100%`, `auto`); spacing from the scale; ≤3 fonts from the steps.
+- [ ] Phase 1 answered; the hero is a **literal image of the product's world**, carrying real data (not a flowchart).
 - [ ] One focal; one accent; rendered hero text ≥13px; `scale = renderedWidth/viewBoxWidth ∈ [0.95,1.05]` at 320/375/768/1280.
-- [ ] No overflow 320–1280; contrast ≥4.5; reduced-motion; mobile nav works.
-- [ ] No raw values (all tokens); ≤3 fonts; no `!important`.
+- [ ] No overflow 320–1280; body contrast ≥4.5; reduced-motion; mobile nav works; no `!important`.
 
 ## Non-goals
 Backend/non-UI work; "just make it pop" with no brief.
