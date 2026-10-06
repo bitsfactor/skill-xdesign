@@ -1,35 +1,45 @@
-# Figure recipes (concrete) — the hero figure
+# Figure recipes — the hero
 
-One hero figure per page: **the product's mechanism, drawn**. Default grammar **hub-and-spoke** (transfers well). Avoid the two failure modes: too generic (grey placeholder) and too sparse/symmetric (a centered row of empty cards — reads as unfinished).
+One hero per page: **a picture of the product**. Default = a **literal object/scene** from the product's world, illustrated in SVG and carrying real data. Use a diagram (§B) only when the product is abstract.
 
-## A. hub-and-spoke (default) — `viewBox 640×400`
-- **Columns**: source `x≈24` · hub center `x≈320` · leaves `x≈468`.
-- **Source** (left): 1–2 stacked cards `w≈136 h≈80 rx=16`; each = eyebrow (mono 12–14, muted) + value (display ~20). Text centered.
-- **Hub** (center, **FOCAL**): `w≈168 h≈104 rx=20`; fill = accent ~12% + accent stroke 2; title (display ~22–24) + subtitle (sans 15–16, muted) + one status dot (r=3, accent). Guarantee: hub is visibly the heaviest element.
-- **Leaves** (right): 3–5 **identical** cards `w≈148 h≈40 rx=12`, vertical pitch ≈52; each = `dot(r=3) + name (16) + right-aligned value (mono 14)`. One value per leaf; no sub-lines. The active leaf's path + value are accent.
-- **Connectors** (2 formulas): (1) source→hub = gentle Bézier (control offset ~40%), accent 2px. (2) hub→leaf fan = identical curvature each, order-preserving (top↔top) so lines never cross, muted 1.5px.
-- **Balance**: fills ~85% of the canvas; leaves column height ≈ source column height.
+## A. Object illustration (DEFAULT for physical / experiential products)
+Pick the product's iconic object (see SKILL Phase 2), then build it from primitives in 2–4 layers: **base shape → shading → highlight → accent detail**.
 
-## B. Other grammars (same discipline)
-- **pipeline**: 3–4 equal stage cards in a row on one line, one accented (current); a step label above, one data value below each; content varies per stage.
-- **split-contrast**: two equal halves (before/after) separated by a hairline; each carries a state + 2–3 real facts; the right/after side is accented.
-- **metric panel**: one BIG accent number + a small inline chart (bars/sparkline, tokens) + 2–3 delta chips; the number is the focal.
-- **list→detail**: a left index column (3–5 rows) + a right detail card (accent) for the selected row; link them with a marker + connector.
-- **timeline**: single axis + 3–5 markers, current one larger + accent with a label pill; every marker carries a real label + value. (A bare timeline of empty cards is the classic "sparse" failure — add real data or use A.)
+### Worked example — a coffee subscription → "the bag with its label"
+1. **Subject**: the coffee bag (the artifact the customer receives).
+2. **Twist**: present it as a **specimen label** — the bag's label carries the batch facts.
+3. **Layers** (viewBox ~`560×440`, object centered, fills ~85%):
+   - bag body: rounded `path`/`rect` (w≈300 h≈360 rx≈16), fill `--surface-2`, 1px `--line`; a top fold line + a small zip/valve detail.
+   - label card: rounded `rect` (w≈210 h≈240 rx≈12) in a parchment/contrast surface, slight shadow (one soft, not a stack).
+   - label content (real data): brand + `LOT 026·03`; origin `耶加雪菲 · 班可`; rows `海拔 1,950–2,100m` / `烘焙日 2026.03.18` / `处理法 水洗·棚架日晒`; flavor chips `柑橘 · 白花 · 蜂蜜`.
+   - accent: ONE seal/stamp (a small circle + the bean glyph) in the accent color.
+4. **Texture/detail**: a bean icon (2 strokes), a stitch or foil line — small, product-specific.
+5. Frame it (§C). Telemetry strip = 3–5 real facts.
 
-## C. Frame (wrap the figure)
-Panel = subtle surface + 1px border + radius 16–20 + padding 16–28; optional faint glow behind.
-- **Top bar** (hairline-bottom): left = short label of what the figure shows; right = ONE live status (mono, single accent dot).
-- **Telemetry strip** (hairline-top): mono 11–12px, 3–5 **real** segments separated by `·`.
-Use bars only when they carry real content.
+### Other objects/moments to reach for
+- sleep app → a phone glowing at night with a soft waveform + a crescent moon.
+- bakery / food → the loaf or the box, steam wisps, a torn label.
+- B2B audit SaaS → a stacked document with an accent seal + a checklist.
+- hardware → the device at an angle, one edge catching light.
+Rules: keep ONE accent; the object is the focal and heaviest; text on the object is real, ≥13px rendered.
+
+## B. Diagrams (ONLY for abstract products: APIs, platforms, data)
+If there is no physical object, pick a grammar — the same discipline as A (one accent, real values, fill the frame):
+- **hub-and-spoke** (one focal among many): source≈24 · hub center≈320 · leaves≈468; hub focal card (accent ~12%); 3–5 identical leaf cards (pitch ≈52, each `dot + name + one value`); one accent path source→hub, thin order-preserving fan hub→leaf (no crossings).
+- **pipeline**: 3–4 equal stage cards on a line, one accented; a step label above, one value below each.
+- **split-contrast**: two equal halves (before/after) split by a hairline; the "after" side accented.
+- **metric panel**: one BIG accent number + a small inline chart + 2–3 deltas.
+- **list→detail**: a left index (3–5 rows) + a right detail card (accent) for the selected row.
+- **timeline**: one axis + 3–5 markers, current one larger + accent; every marker has a real label + value.
+
+## C. Frame (wrap any hero)
+Panel = subtle surface + 1px border + radius 16–20 + padding 16–28; optional faint glow behind. **Top bar** (hairline-bottom): short label + ONE live status. **Telemetry strip** (hairline-top): mono 11–12px, 3–5 real segments. Use only when they carry real content.
 
 ## D. Bounded density
-- Lower: no empty quadrant with edge ≥ 25% of the viewBox; each leaf has a real value; primary path clearly spans source→focal→target.
-- Upper: ≤ ~14 in-figure `<text>` items; ONE header/status bar; exactly ONE strong element; no "12px low-contrast mono" filler — real data ≥13px or cut.
-- If a fix for "too empty" adds chrome and the next look says "too dense", remove chrome — don't add more.
+No empty quadrant ≥25%; each labeled element has a real value; ≤~14 in-figure `<text>` items; exactly ONE strong element; no "12px low-contrast mono" filler — real data ≥13px or cut.
 
 ## E. Scale coupling (the recurring bug)
-SVG coords are user units; the browser scales the SVG to its container. Make **rendered width ≈ viewBox width** (`scale ∈ [0.95,1.05]`), or set `svg_font_size = target_px / scale`. Verify the **rendered** `<text>` ≥ 13px in the browser — not from markup units.
+Make **rendered width ≈ viewBox width** (`scale ∈ [0.95,1.05]`) or set `svg_font_size = target_px / scale`. Verify **rendered** hero `<text>` ≥13px in the browser.
 
 ## F. CJK
-Headings: `line-break:strict; word-break:keep-all;`; `overflow-wrap:anywhere` only on non-CJK runs. Underlines via real `text-decoration` + `text-underline-offset`. In single-column layout, an `margin-inline:auto` item must have `width:100%` (+ max-width) or it collapses.
+Headings `line-break:strict; word-break:keep-all;`; `overflow-wrap:anywhere` only on non-CJK runs; real `text-decoration` + `text-underline-offset`. Single-column `margin-inline:auto` items need `width:100%` (+ max-width).
