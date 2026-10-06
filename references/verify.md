@@ -9,6 +9,7 @@
 - **Ragged tiers** — same-tier nodes of different size, or uneven gaps (pitch not constant).
 - **Too-small text** — any hero `<text>` rendering below 13px.
 - **Page overflow** — horizontal scroll at 320/375/768/1280.
+- **Invisible content** — any element holding text (or with height > 20) whose computed `opacity:0` / `visibility:hidden` / `display:none` at rest. (This is the classic "blank page" bug from scroll-reveal animations.)
 - **Connector ports** — a line not starting/ending on the node edge it connects to.
 
 ## Audit snippet — run it in the browser (Playwright MCP `evaluate`) and fix until `bugs: []`
@@ -33,6 +34,8 @@
   const sc=hero.getBoundingClientRect().width/hero.viewBox.baseVal.width;
   hero.querySelectorAll('text').forEach(t=>{const px=parseFloat(getComputedStyle(t).fontSize)*sc;if(px<12.9)bugs.push(`text "${(t.textContent||'').trim().slice(0,16)}" ${px.toFixed(1)}px < 13`);});
   if(document.documentElement.scrollWidth>document.documentElement.clientWidth+1)bugs.push('page horizontal overflow');
+  document.querySelectorAll('body *').forEach(el=>{const cs=getComputedStyle(el);const r=el.getBoundingClientRect();
+    if((cs.opacity==='0'||cs.visibility==='hidden')&&(el.textContent||'').trim().length>0&&r.height>20)bugs.push('invisible content: '+(el.className||el.tagName));});
   return {viewBox:hero.getAttribute('viewBox'),bugs};
 }
 ```

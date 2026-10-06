@@ -35,7 +35,7 @@ Pick 2–3 candidate subjects from the world → choose the most evocative + dra
 **6 · VERIFY (mandatory)** — run the audit in `references/verify.md` at 320/375/768/1280; fix every bug; repeat until 0.
 
 ## Self-check
-- [ ] **Geometry audit returns 0 bugs at 320/375/768/1280.**
+- [ ] **Geometry audit returns 0 bugs at 320/375/768/1280** (incl. no invisible content — every section shows in a full-page screenshot).
 - [ ] **Section outline written;** page = hero + 2–4 substance sections + proof + CTA + footer, each with REAL copy and (where fitting) its own illustration.
 - [ ] Token backbone exists; no raw hex/px outside `:root`; spacing from the scale; ≤3 fonts.
 - [ ] Hero is a literal image with real data (not a flowchart); figure text small; light theme unless the product is dark.

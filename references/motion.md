@@ -17,3 +17,9 @@ Plus: section reveals `translateY(10px)+opacity→none`, staggered via a `--i` i
 - **One or two loops per figure, max.** Subtle (opacity/translate); never spin, bounce, or shake.
 - Durations: entrances ~120–420ms (ease-out); loops 1.3–2.4s (linear/ease-in-out).
 - **Always** add: `@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}`.
+
+## Reveal rule — NEVER hide content at rest (the "blank page" bug)
+Do not gate real content on JS/scroll. A full-page screenshot (or a no-JS visitor) must show everything.
+- Content is **visible by default**. A scroll reveal may only be a *progressive enhancement*: animate `transform` (and at most fade from ≥0.001 opacity), and add the `.in` class to **all** reveal elements on load (not only on scroll), with a `@media (scripting: none){.reveal{opacity:1}}` fallback.
+- Simplest safe option: **skip opacity-0 reveals entirely**; just animate the hero, or animate `translateY` on already-opaque elements.
+- The geometry audit flags any text element with `opacity:0` at rest — treat that as a bug.
