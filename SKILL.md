@@ -18,7 +18,7 @@ Four principles, in order:
 Pick 2–3 candidate subjects from the world → choose the most evocative + drawable (the product's **iconic object**) → give it a twist → put **real data** on it → write the concept as a picture in one paragraph.
 
 ## Phase 3 · Plan the page — CONTENT & STRUCTURE (mandatory, before any CSS)
-**A thin page is the #1 failure. Write this outline first, then build top→bottom.**
+**A thin page is the #1 failure. Write this outline first, then build top→bottom.** Section templates by product type + density floors: `references/content-plan.md`.
 1. **Sections (top→bottom)** — for EACH write: its *job* · a *headline* · **1–3 sentences of REAL body copy** · the **real data** it shows. A strong landing page is usually:
    `nav · hero · 2–4 substance sections · social proof (numbers + quotes + press) · a mid-page CTA band · footer`.
    NOT "hero + 3 icon features". If a section is just an icon + one line, it's too thin — give it a claim, detail, and a value.
@@ -29,15 +29,17 @@ Pick 2–3 candidate subjects from the world → choose the most evocative + dra
 **0 · Tokens** — write the `:root` block first; no raw values outside it (`references/tokens.md`).
 **1 · Illustrate** the objects (`references/illustration.md`): each = ground-shadow · body (fill + darker stroke) · ONE defining feature · a label with real data · props. Hero pattern by type: **app → a device mockup of the REAL screen**; **physical → object + a tilted card + a status tag + props**; **abstract → a light console**. Figure text **small & refined (10–15px)**.
 **2 · Motion** (`references/motion.md`): beat · travel · dash · sweep · sheet; ≤2 loops per figure; under `prefers-reduced-motion`.
-**3 · Craft** — 4px grid; hierarchy by weight+color; ≤3 fonts; contrast ≥4.5; `role="img"`+`aria-labelledby`; decorative `aria-hidden`.
+**3 · Craft & taste** (`references/taste.md`) — 4px grid; hierarchy by weight+color; ≤3 fonts; contrast ≥4.5; light, restrained palette; one accent; `role="img"`+`aria-labelledby`; decorative `aria-hidden`.
 **4 · Robustness** — no horizontal overflow 320/375/768/1280; touch ≥44px; working mobile nav; anchors clear of a sticky header.
 **5 · Anti-slop** — no emoji/raster/clipart; no gradient-on-everything; no "3 grey circles"; no box-and-line diagram for a physical product; no texture behind text.
-**6 · VERIFY (mandatory)** — run the audit in `references/verify.md` at 320/375/768/1280; fix every bug; repeat until 0.
+**6 · VERIFY + SELF-REVIEW (mandatory)** — run the page-level audit (`references/verify.md`) at 320/375/768/1280 → 0 bugs; then screenshot the hero AND the full page at 1440/375 and grade with `references/self-review.md`; fix every High; re-check (≤2 rounds).
 
 ## Self-check
 - [ ] **Geometry audit returns 0 bugs at 320/375/768/1280** (incl. no invisible content — every section shows in a full-page screenshot).
 - [ ] **Section outline written;** page = hero + 2–4 substance sections + proof + CTA + footer, each with REAL copy and (where fitting) its own illustration.
 - [ ] Token backbone exists; no raw hex/px outside `:root`; spacing from the scale; ≤3 fonts.
+- [ ] ≥3 substance sections, each with a claim + real copy + a number; no "icon + one line" sections.
+- [ ] Self-review rubric: every High = 2; nothing invisible; light, restrained, one accent.
 - [ ] Hero is a literal image with real data (not a flowchart); figure text small; light theme unless the product is dark.
 
 ## Non-goals

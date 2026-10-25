@@ -61,3 +61,30 @@ hub-and-spoke (focal hub + identical leaves + one accent path, no crossings) · 
 - **Frame** (optional): subtle panel + 1px border + radius; hairline top bar (label + one status) + a telemetry strip of 3–5 real facts.
 - **Scale coupling**: rendered width ≈ viewBox width (`scale ∈ [0.95,1.05]`); verify rendered hero `<text>` ≥13px.
 - **CJK**: `line-break:strict; word-break:keep-all`; real `text-decoration` + `text-underline-offset`; single-column `margin-inline:auto` items need `width:100%`.
+
+## G. Worked recipe — physical product (viewBox ~640×460)
+Object ~55% of width, centred, generous margin; one secondary card, one status tag, 2–3 props.
+- **ground shadow**: `ellipse cx=320 cy=430 rx=150 ry=14 opacity=.10`
+- **bag body**: `rect x=200 y=90 w=240 h=300 rx=20`, fill clay, `stroke` clay-deep 1.5
+- **crimp band** (defining detail): `rect x=200 y=60 w=240 h=34` fill clay-deep + ~12 vertical ridge lines (paper, width 1, opacity .5, pitch 20)
+- **fold lines**: 2 verticals at x=225 / x=415, y 94→390, clay-deep @ .25
+- **label**: `rect x=250 y=180 w=140 h=150 rx=10` fill paper + stroke rule; centred: mono 11 `第 07 期 · 秋`, display 26 brand, rule, mono 12 origin, mono 12 process/weight
+- **secondary card** (overlaps by ~25%, rotated −7°): paper card ~150×190 with a chip + 4 short rule rows
+- **status tag** (floating top-right): dark ink pill ~120×44, paper text `现烘 · 48h 发货`
+- **props**: 3 beans at the base (`ellipse rx16 ry11` + a crease path), slightly rotated
+- **accent**: one only (a seal circle or the tag)
+
+## H. Worked recipe — app screen (viewBox ~440×660)
+- **phone body**: `rect x=80 y=24 w=280 h=600 rx=42` fill surface-2 + stroke line 1.5
+- **screen**: `rect x=94 y=38 w=252 h=572 rx=32` fill bg
+- **notch**: small rounded rect centred at the top; status bar in mono 10
+- **screen content**: one hero metric (display 40) + a progress **ring** (circle, accent arc) + a **bar chart** (5–9 rects) + 3 **metric tiles** (rect + mono value 15/10) — all text 10–12, real values
+- **floating chips** (outside the phone, 2): rounded rect + dot + 10–11px label, offset top-left / bottom-right
+- **ground shadow** ellipse under the phone; **one accent**
+
+## I. Composition rules (make it read as "designed")
+- Object/figure occupies ~50–60% of the figure width; margins generous (≥ 40px each side).
+- A secondary card **overlaps** the main object by ~20–30% and is rotated 6–10° — this single move does most of the work.
+- 1–3 props sit at the **base** (ground line), small and muted.
+- One floating status tag adds life; keep it to one.
+- Exactly one accent element; everything else is surface/ink/muted + hairlines.
