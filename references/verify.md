@@ -74,3 +74,10 @@
 
 ## Loop
 Audit → fix → audit. Compare the set of bugs, not just the count; only stop at `[]` on all four widths.
+
+## Note — nested illustrations (avoid false positives)
+Nodes nest: a phone body contains a screen, tiles, bars. **Containment is NOT an overlap.**
+- Overlap check: skip any pair where one rect fully contains the other (`a.x<=b.x && a.y<=b.y && a.x+a.w>=b.x+b.w && a.y+a.h>=b.y+b.h`).
+- Text-fit check: compare a text only against the **smallest containing rect whose height ≥ text height** — not against a big parent frame.
+- Give text ≥3px horizontal / ≥2px vertical breathing room inside its own box; text that intentionally sits *outside* any rect (e.g., a floating label) is skipped.
+Without these, the audit floods you with false positives and you chase ghosts.
