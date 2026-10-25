@@ -39,7 +39,7 @@
 ```
 
 ## Rules (non-negotiable)
-1. **No raw values outside `:root`.** Every `color` / `background` / `border-color` / `padding` / `margin` / `gap` / `font-size` / `border-radius` uses a token. Need a new value? **Add it to the block first**, then use it.
+1. **No raw values in CSS outside `:root`.** Every `color`/`background`/`border-color`/`padding`/`margin`/`gap`/`font-size`/`border-radius` uses a token. Need a new value? **Add it to the block first.** *(Exception: a hand-drawn `<svg>` illustration may use hex fills/strokes for shading — but prefer `var(--token)`; the CSS around it is still strict.)*
 2. **Spacing only from the scale.** No arbitrary `margin:7px`. A 4px base is why everything lines up.
 3. **≤3 font families**, in roles (display / body / mono); sizes only from the fixed steps → no font drift.
 4. **One radius scale, ≤2 shadows, one easing.**
