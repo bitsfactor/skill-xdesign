@@ -25,20 +25,23 @@
   // invisible content
   document.querySelectorAll('body *').forEach(el => {
     const cs = getComputedStyle(el); const r = el.getBoundingClientRect();
-    if ((cs.opacity === '0' || cs.visibility === 'hidden') && (el.textContent || '').trim().length > 0 && r.height > 20)
+    // only page content counts: a collapsed nav/menu is legitimately hidden
+    if (el.closest('main, [role=main]') && (cs.opacity === '0' || cs.visibility === 'hidden') && (el.textContent || '').trim().length > 0 && r.height > 20)
       bugs.push('invisible: ' + (el.className || el.tagName));
-    if (el.scrollWidth > el.clientWidth + 1 && cs.overflow !== 'visible' && el.children.length === 0 && (el.textContent || '').trim())
+    if (!el.classList.contains('sr-only') && el.scrollWidth > el.clientWidth + 1 && cs.overflow !== 'visible' && el.children.length === 0 && (el.textContent || '').trim())
       bugs.push('text clipped: ' + (el.className || el.tagName));
   });
-  // tap targets
+  // tap targets (a checkbox/radio's real target is its wrapping <label>)
   document.querySelectorAll('a,button,[role=button],input,summary').forEach(el => {
     const r = el.getBoundingClientRect();
-    if (r.width > 0 && r.height > 0 && (r.width < 44 || r.height < 44)) bugs.push('small target: ' + (el.className || el.tagName) + ` ${Math.round(r.width)}x${Math.round(r.height)}`);
+    const label = el.type === 'checkbox' || el.type === 'radio' ? el.closest('label') : null;
+    const box = label ? label.getBoundingClientRect() : r;
+    if (box.width > 0 && box.height > 0 && (box.width < 44 || box.height < 44)) bugs.push('small target: ' + (el.className || el.tagName) + ` ${Math.round(box.width)}x${Math.round(box.height)}`);
   });
   // hero svg
   const svgs = [...document.querySelectorAll('svg')]; let hero = null, best = -1;
   for (const s of svgs) { const r = s.getBoundingClientRect(); if (r.width * r.height > best) { best = r.width * r.height; hero = s; } }
-  if (hero) {
+  if (hero && hero.getBoundingClientRect().width >= 300) { // below 300px it's a logo/icon, not the hero figure
     const B = el => { const b = el.getBBox(); return { x: b.x, y: b.y, w: b.width, h: b.height }; };
     const rects = [...hero.querySelectorAll('rect')].map((r, i) => ({ i, ...B(r) }));
     const texts = [...hero.querySelectorAll('text')].map(t => ({ s: (t.textContent || '').trim().slice(0, 16), ...B(t) }));

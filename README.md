@@ -17,17 +17,14 @@ xdesign fixes this with four principles, in priority order:
 
 ## Install
 
-Copy the skill into your agent's skills directory:
-
 ```bash
-# opencode (global)
-git clone git@github.com:bitsfactor/skill-xdesign.git ~/.config/opencode/skills/xdesign
-
-# Claude Code
-git clone git@github.com:bitsfactor/skill-xdesign.git ~/.claude/skills/xdesign
+git clone git@github.com:bitsfactor/skill-xdesign.git
+cd skill-xdesign
+./install.sh          # symlink into ~/.config/opencode/skills/xdesign and ~/.claude/skills/xdesign
+# ./install.sh copy   # or copy the files instead
 ```
 
-Any agent that supports the `SKILL.md` + `references/` convention can use it. Otherwise, just point the model at `SKILL.md`.
+`install.sh` installs into every agent skills dir that exists. Any agent that reads `SKILL.md` + `references/` can use it; otherwise point the model at `SKILL.md`.
 
 ## How it works
 
@@ -42,10 +39,13 @@ References:
 
 | File | Contents |
 |---|---|
-| `references/tokens.md` | The token block and the non-negotiable rules (light theme by default) |
-| `references/illustration.md` | How to draw good SVG objects, hero patterns by product type, figure type scale |
-| `references/motion.md` | Five motion recipes, plus the "never hide content" rule |
-| `references/verify.md` | The geometry audit — the definition of "no visual bugs" and how to fix each one |
+| `references/tokens.md` | Token block + rules (light theme by default) |
+| `references/content-plan.md` | Section templates by product type + density floor |
+| `references/illustration.md` | How to draw good SVG objects, hero patterns, figure type scale |
+| `references/taste.md` | Light-first directions, anti-"AI" rules, rhythm |
+| `references/motion.md` | Motion recipes + the "never hide content" rule |
+| `references/verify.md` | The page-level audit — the definition of "no visual bugs" |
+| `references/self-review.md` | Generate → screenshot → grade → fix loop |
 
 ## The audit
 
@@ -58,6 +58,34 @@ The core of the quality claim. Run it in the browser (Playwright `evaluate`) and
 ```
 
 Repeat at 320 / 375 / 768 / 1280.
+
+## Benchmark
+
+Same brief, same model, one run per arm; only difference is whether the skill is supplied.
+
+- **Generator**: `deepseek-v4.1-flash` (both arms)
+- **Judge**: `gemini-4-argon`, blind pair comparison on 1440×900 hero screenshots, each pair judged in **both orders** (A/B and B/A)
+- **Briefs**: B1 API gateway · L2 coffee subscription · L4 compliance SaaS (train set; hold-out untouched)
+- **Harness**: `examples/briefs.md` — one run per arm, judge blind, both orders
+
+| Brief | Judge (2 orders) | xdesign audit bugs¹ | no-skill audit bugs¹ |
+|---|---|---|---|
+| B1 · Nimbus | **2–0 xdesign** | 0 / 0 / 0 / 0 | 13 / 12 / 13 / 15 |
+| L2 · Morrow | **2–0 xdesign** | 0 / 0 / 0 / 0 | 3 / 3 / 3 / 4 |
+| L4 · Ledgerline | **2–0 xdesign** | 0 / 0 / 0 / 0 | 17 / 17 / 17 / 10 |
+
+¹ bugs at 320 / 375 / 768 / 1280 from `references/verify.md`. The no-skill pages mainly fail on touch targets and, for L4, scroll-reveal sections that stay invisible — the exact failure the audit exists to catch.
+
+Caveat: three briefs, one generation per arm, one model judge. This is evidence, not a proof.
+
+## Repo layout
+
+```
+SKILL.md              the method
+references/           tokens · content-plan · illustration · taste · motion · verify · self-review
+install.sh            installs into ~/.config/opencode/skills and ~/.claude/skills
+examples/             a worked sample page + the brief set used for evaluation
+```
 
 ## License
 

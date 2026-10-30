@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Still 静眠 — 专为深度睡眠打造的助眠与冥想 App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Palette: Restrained Deep Night */
+      --night-950: #0a0d14;
+      --night-900: #0f1420;
+      --night-850: #151b2b;
+      --night-800: #1a2236;
+      --night-700: #232d47;
+      --night-600: #2f3b5c;
+
+      --ink-100: #f0f3fa;
+      --ink-300: #c2cbe0;
+      --ink-500: #7e8ba8;
+      --ink-700: #495470;
+
+      /* Single Accent: Warm Amber Moonlight (not neon) */
+      --amber-400: #e5a962;
+      --amber-500: #cf9048;
+      --amber-900: #332211;
+      --amber-glow: rgba(229, 169, 98, 0.15);
+
+      /* Semantic tokens */
+      --bg: var(--night-950);
+      --surface: var(--night-900);
+      --surface-2: var(--night-850);
+      --surface-elevated: var(--night-800);
+      --surface-highlight: var(--night-700);
+
+      --text: var(--ink-100);
+      --text-muted: var(--ink-300);
+      --text-dim: var(--ink-500);
+
+      --border: rgba(194, 203, 224, 0.10);
+      --border-strong: rgba(194, 203, 224, 0.20);
+      --border-accent: rgba(229, 169, 98, 0.35);
+
+      --accent: var(--amber-400);
+      --accent-deep: var(--amber-500);
+      --accent-surface: var(--amber-900);
+      --accent-ink: #0a0d14;
+
+      /* Sleep Stage Tokens */
+      --stage-deep: #41568c;
+      --stage-core: #2b395d;
+      --stage-rem: #6c5a8e;
+      --stage-awake: #8f654b;
+
+      /* 4px Base Spacing Scale */
+      --space-0: 0px;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-7: 32px;
+      --space-8: 40px;
+      --space-9: 48px;
+      --space-10: 64px;
+      --space-11: 80px;
+      --space-12: 96px;
+
+      /* Radii scale */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 32px;
+      --radius-pill: 999px;
+
+      /* Typography */
+      --font-display: 'Noto Serif SC', Georgia, serif;
+      --font-body: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, monospace;
+
+      --text-xs: 12px;
+      --text-sm: 14px;
+      --text-base: 16px;
+      --text-lg: 18px;
+      --text-xl: 22px;
+      --text-2xl: 28px;
+      --text-3xl: 36px;
+      --text-4xl: 48px;
+
+      --leading-tight: 1.2;
+      --leading-snug: 1.35;
+      --leading-body: 1.68;
+
+      /* Elevation and Motion */
+      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.25);
+      --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.45);
+      --dur: 0.2s;
+      --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: var(--space-0);
+      padding: var(--space-0);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-body);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body {
+      overflow-x: hidden;
+      width: 100%;
+      background-color: var(--bg);
+    }
+
+    /* Accessibility & Focus */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* Motion Recipes */
+    @keyframes pulseSoft {
+      0%, 100% { transform: scale(1); opacity: 0.88; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+
+    @keyframes breathExpand {
+      0%, 100% { transform: scale(0.92); opacity: 0.45; }
+      40% { transform: scale(1.05); opacity: 0.95; }
+      70% { transform: scale(1.05); opacity: 0.95; }
+    }
+
+    @keyframes waveGlide {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -32; }
+    }
+
+    /* Layout Primitives */
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin-inline: auto;
+      padding-inline: var(--space-6);
+    }
+
+    .section {
+      padding-block: var(--space-12);
+      position: relative;
+    }
+
+    .section--alt {
+      background-color: var(--surface);
+      border-block: 1px solid var(--border);
+    }
+
+    /* Navigation */
+    .header {
+      position: sticky;
+      top: var(--space-0);
+      z-index: 100;
+      background-color: rgba(10, 13, 20, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      gap: var(--space-4);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      text-decoration: none;
+      color: var(--text);
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background-color: var(--surface-elevated);
+      border: 1px solid var(--border-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+      list-style: none;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: var(--text-sm);
+      font-weight: 500;
+      min-height: 44px;
+      min-width: 44px;
+      padding-inline: var(--space-2);
+      transition: color var(--dur) var(--ease);
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius-pill);
+      min-height: 44px;
+      min-width: 44px;
+      padding-inline: var(--space-6);
+      padding-block: var(--space-3);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all var(--dur) var(--ease);
+      white-space: nowrap;
+    }
+
+    .btn--primary {
+      background-color: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    .btn--primary:hover {
+      background-color: var(--accent-deep);
+    }
+
+    .btn--secondary {
+      background-color: var(--surface-2);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn--secondary:hover {
+      background-color: var(--surface-elevated);
+      border-color: var(--border-strong);
+    }
+
+    /* Hero Section */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: var(--space-10);
+      padding-top: var(--space-8);
+      padding-bottom: var(--space-8);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background-color: var(--surface-2);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-pill);
+      padding: var(--space-1) var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulseSoft 2.5s ease-in-out infinite;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      line-height: var(--leading-tight);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: var(--text-lg);
+      line-height: var(--leading-body);
+      color: var(--text-muted);
+      margin-bottom: var(--space-7);
+      max-width: 520px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-val {
+      font-family: var(--font-mono);
+      font-size: var(--text-xl);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: var(--text-xs);
+      color: var(--text-dim);
+      margin-top: var(--space-1);
+    }
+
+    /* Device Mockup Shell */
+    .phone-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .phone-svg {
+      width: 100%;
+      max-width: 440px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.65));
+    }
+
+    /* Section Subgrid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: var(--space-10);
+    }
+
+    .feature-grid--reverse {
+      direction: rtl;
+    }
+
+    .feature-grid--reverse > * {
+      direction: ltr;
+    }
+
+    .feature-copy {
+      max-width: 480px;
+    }
+
+    .section-headline {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      line-height: var(--leading-tight);
+      font-weight: 600;
+      margin-bottom: var(--space-4);
+    }
+
+    .section-desc {
+      font-size: var(--text-base);
+      color: var(--text-muted);
+      line-height: var(--leading-body);
+      margin-bottom: var(--space-6);
+    }
+
+    .metric-callout {
+      display: inline-flex;
+      flex-direction: column;
+      padding: var(--space-4) var(--space-5);
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-6);
+    }
+
+    .metric-callout-number {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: var(--space-1);
+    }
+
+    .metric-callout-detail {
+      font-size: var(--text-xs);
+      color: var(--text-dim);
+    }
+
+    .spec-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .spec-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+    }
+
+    .spec-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* Social Proof Section */
+    .proof-head {
+      text-align: center;
+      max-width: 640px;
+      margin-inline: auto;
+      margin-bottom: var(--space-9);
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .review-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .stars {
+      display: flex;
+      gap: var(--space-1);
+      color: var(--accent);
+      font-size: var(--text-sm);
+    }
+
+    .review-quote {
+      font-size: var(--text-sm);
+      line-height: var(--leading-body);
+      color: var(--text-muted);
+      font-style: normal;
+    }
+
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      border-top: 1px solid var(--border);
+      padding-top: var(--space-3);
+    }
+
+    .reviewer-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--surface-elevated);
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .reviewer-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reviewer-name {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .reviewer-role {
+      font-size: var(--text-xs);
+      color: var(--text-dim);
+    }
+
+    /* Mid-page CTA Band */
+    .cta-band {
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+      border-block: 1px solid var(--border-accent);
+      padding-block: var(--space-11);
+      text-align: center;
+    }
+
+    .cta-inner {
+      max-width: 680px;
+      margin-inline: auto;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      line-height: var(--leading-tight);
+      font-weight: 700;
+      margin-bottom: var(--space-4);
+    }
+
+    .cta-desc {
+      font-size: var(--text-base);
+      color: var(--text-muted);
+      line-height: var(--leading-body);
+      margin-bottom: var(--space-7);
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    .cta-guarantee {
+      font-size: var(--text-xs);
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--bg);
+      border-top: 1px solid var(--border);
+      padding-block: var(--space-10);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: var(--space-8);
+      margin-bottom: var(--space-8);
+    }
+
+    .footer-brand-desc {
+      font-size: var(--text-sm);
+      color: var(--text-dim);
+      line-height: var(--leading-body);
+      margin-top: var(--space-3);
+      max-width: 320px;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: var(--text-sm);
+      min-height: 44px;
+      transition: color var(--dur) var(--ease);
+    }
+
+    .footer-link:hover {
+      color: var(--text);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--border);
+      font-size: var(--text-xs);
+      color: var(--text-dim);
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+
+    /* Section anchors offset for sticky header */
+    [id] {
+      scroll-margin-top: 88px;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 992px) {
+      .hero-grid,
+      .feature-grid,
+      .feature-grid--reverse {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+      }
+
+      .feature-grid--reverse {
+        direction: ltr;
+      }
+
+      .proof-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header .nav-links {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: var(--text-3xl);
+      }
+
+      .section-headline {
+        font-size: var(--text-2xl);
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .cta-buttons .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="header">
+    <div class="container nav-inner">
+      <a href="#" class="brand" aria-label="Still 静眠 首页">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </div>
+        <span class="brand-name">Still 静眠</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#report" class="nav-link">睡眠报告</a></li>
+        <li><a href="#mixer" class="nav-link">白噪音混音</a></li>
+        <li><a href="#breathing" class="nav-link">睡前引导</a></li>
+        <li><a href="#reviews" class="nav-link">用户评价</a></li>
+      </ul>
+
+      <div>
+        <a href="#download" class="btn btn--primary">开启 7 天免费试用</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="section">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="eyebrow-dot" aria-hidden="true"></span>
+            <span>全新 3.2 版本 · 专为夜间而生</span>
+          </div>
+
+          <h1 class="hero-title">
+            把每个夜晚，<br>交还给<span>纯粹的深睡</span>
+          </h1>
+
+          <p class="hero-desc">
+            无开屏广告，无社交绑架。Still 静眠结合多维度声学睡眠监测、32 轨原声自然混音与临床验证的 4-4-8 节律引导，帮助你在 15 分钟内自然卸下焦虑、沉入深睡。
+          </p>
+
+          <div class="hero-actions">
+            <a href="#download" class="btn btn--primary">免费下载 iOS / Android</a>
+            <a href="#report" class="btn btn--secondary">了解声学算法</a>
+          </div>
+
+          <div class="hero-stats">
+            <div>
+              <div class="stat-val">14.8 min</div>
+              <div class="stat-label">平均入睡潜伏期缩短</div>
+            </div>
+            <div>
+              <div class="stat-val">91.4%</div>
+              <div class="stat-label">连续 14 天深睡达标率</div>
+            </div>
+            <div>
+              <div class="stat-val">4.9 / 5.0</div>
+              <div class="stat-label">App Store 38,000+ 评分</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero SVG: Sleep Report Phone Mockup -->
+        <div class="phone-wrap">
+          <svg class="phone-svg" viewBox="0 0 440 660" role="img" aria-labelledby="hero-phone-title" xmlns="http://www.w3.org/2000/svg">
+            <title id="hero-phone-title">Still 静眠 App 睡眠报告界面界面：综合得分 92 分，深睡 2 小时 18 分</title>
+            
+            <!-- Ground Soft Shadow -->
+            <ellipse cx="220" cy="636" rx="148" ry="14" fill="#000000" opacity="0.45" />
+
+            <!-- Phone Body -->
+            <rect x="80" y="24" width="280" height="600" rx="42" fill="#151b2b" stroke="#232d47" stroke-width="1.5" />
+            <!-- Phone Screen -->
+            <rect x="94" y="38" width="252" height="572" rx="32" fill="#0f1420" />
+
+            <!-- Dynamic Island / Top Notch -->
+            <rect x="180" y="48" width="80" height="18" rx="9" fill="#0a0d14" />
+            <text x="124" y="61" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" font-weight="500">07:30</text>
+            <text x="320" y="61" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="end">100%</text>
+
+            <!-- Screen Content: Sleep Report Title -->
+            <text x="114" y="94" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="0.05em">SLEEP ANALYSIS</text>
+            <text x="114" y="116" fill="#f0f3fa" font-family="'Noto Serif SC', serif" font-size="16" font-weight="600">昨夜睡眠质量</text>
+
+            <!-- Sleep Score Card -->
+            <rect x="110" y="130" width="220" height="116" rx="16" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+            
+            <!-- Circular Progress Arc for Score 92 -->
+            <circle cx="160" cy="188" r="38" fill="none" stroke="#232d47" stroke-width="6" />
+            <circle cx="160" cy="188" r="38" fill="none" stroke="#e5a962" stroke-width="6" stroke-linecap="round"
+                    stroke-dasharray="238.7" stroke-dashoffset="19.1" transform="rotate(-90 160 188)" />
+            <text x="160" y="184" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="20" font-weight="700" text-anchor="middle">92</text>
+            <text x="160" y="200" fill="#e5a962" font-family="'Noto Sans SC', sans-serif" font-size="11" text-anchor="middle">极佳质量</text>
+
+            <!-- Sleep Duration & Efficiency in Card -->
+            <text x="220" y="166" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">总入睡时长</text>
+            <text x="220" y="186" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="15" font-weight="600">7h 48m</text>
+            <text x="220" y="208" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">入睡潜伏期 12m</text>
+            <text x="220" y="226" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="11">深睡达标 +24%</text>
+
+            <!-- Sleep Stages Horizontal Bar -->
+            <text x="114" y="268" fill="#c2cbe0" font-family="'Noto Sans SC', sans-serif" font-size="12" font-weight="500">睡眠阶段分布</text>
+            
+            <!-- Segmented Stage Bar: 220px total width -->
+            <rect x="110" y="280" width="36" height="14" rx="4" fill="#8f654b" />
+            <rect x="150" y="280" width="70" height="14" rx="4" fill="#41568c" />
+            <rect x="224" y="280" width="66" height="14" rx="4" fill="#2b395d" />
+            <rect x="294" y="280" width="36" height="14" rx="4" fill="#6c5a8e" />
+
+            <!-- Stage Legends -->
+            <circle cx="114" cy="308" r="3" fill="#8f654b" />
+            <text x="122" y="311" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">清醒 8%</text>
+
+            <circle cx="172" cy="308" r="3" fill="#41568c" />
+            <text x="180" y="311" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">深睡 29%</text>
+
+            <circle cx="238" cy="308" r="3" fill="#2b395d" />
+            <text x="246" y="311" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">核心 42%</text>
+
+            <circle cx="296" cy="308" r="3" fill="#6c5a8e" />
+            <text x="304" y="311" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">REM</text>
+
+            <!-- 7-Day Trend Chart -->
+            <rect x="110" y="328" width="220" height="124" rx="16" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+            <text x="122" y="348" fill="#c2cbe0" font-family="'Noto Sans SC', sans-serif" font-size="12" font-weight="500">过去 7 天深睡趋势</text>
+            <text x="318" y="348" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="11" text-anchor="end">均值 88 分</text>
+
+            <!-- 7 Bar Charts (x: 126, 154, 182, 210, 238, 266, 294) -->
+            <!-- Mon -->
+            <rect x="126" y="394" width="14" height="38" rx="3" fill="#232d47" />
+            <text x="133" y="444" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="middle">一</text>
+            <!-- Tue -->
+            <rect x="154" y="386" width="14" height="46" rx="3" fill="#232d47" />
+            <text x="161" y="444" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="middle">二</text>
+            <!-- Wed -->
+            <rect x="182" y="378" width="14" height="54" rx="3" fill="#232d47" />
+            <text x="189" y="444" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="middle">三</text>
+            <!-- Thu -->
+            <rect x="210" y="388" width="14" height="44" rx="3" fill="#232d47" />
+            <text x="217" y="444" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="middle">四</text>
+            <!-- Fri -->
+            <rect x="238" y="372" width="14" height="60" rx="3" fill="#232d47" />
+            <text x="245" y="444" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="middle">五</text>
+            <!-- Sat -->
+            <rect x="266" y="366" width="14" height="66" rx="3" fill="#232d47" />
+            <text x="273" y="444" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="middle">六</text>
+            <!-- Sun (Active) -->
+            <rect x="294" y="362" width="14" height="70" rx="3" fill="#e5a962" />
+            <text x="301" y="444" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="11" font-weight="600" text-anchor="middle">日</text>
+
+            <!-- 3 Vital Metrics Tiles -->
+            <g transform="translate(110, 464)">
+              <rect x="0" y="0" width="68" height="60" rx="10" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="8" y="18" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">深睡时长</text>
+              <text x="8" y="38" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="13" font-weight="600">2h 18m</text>
+              <text x="8" y="52" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="11">↑ 18%</text>
+
+              <rect x="76" y="0" width="68" height="60" rx="10" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="84" y="18" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">心率均值</text>
+              <text x="84" y="38" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="13" font-weight="600">54 bpm</text>
+              <text x="84" y="52" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">平稳</text>
+
+              <rect x="152" y="0" width="68" height="60" rx="10" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="160" y="18" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">呼吸率</text>
+              <text x="160" y="38" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="13" font-weight="600">14.2/m</text>
+              <text x="160" y="52" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">匀速</text>
+            </g>
+
+            <!-- Bottom Floating Status Pill -->
+            <g transform="translate(142, 540)">
+              <rect x="0" y="0" width="156" height="34" rx="17" fill="#1a2236" stroke="#e5a962" stroke-width="1" />
+              <circle cx="16" cy="17" r="4" fill="#e5a962" />
+              <text x="28" y="22" fill="#f0f3fa" font-family="'Noto Sans SC', sans-serif" font-size="11" font-weight="500">已连续 7 天达标深度睡眠</text>
+            </g>
+
+            <!-- Floating Card Badge outside phone (top right) -->
+            <g transform="translate(290, 80)">
+              <rect x="0" y="0" width="138" height="48" rx="12" fill="#1a2236" stroke="#e5a962" stroke-width="1.2" filter="drop-shadow(0 8px 16px rgba(0,0,0,0.4))" />
+              <text x="12" y="20" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="11" font-weight="600">DEEP SLEEP +32m</text>
+              <text x="12" y="36" fill="#f0f3fa" font-family="'Noto Sans SC', sans-serif" font-size="11">超越 94% 同龄用户</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Substance Section 1: Sleep Report -->
+    <section id="report" class="section section--alt">
+      <div class="container feature-grid">
+        <div class="feature-copy">
+          <div class="eyebrow">
+            <span>精准生理反馈</span>
+          </div>
+          <h2 class="section-headline">
+            看不见的夜间体征，<br>用临床级数据说话
+          </h2>
+          <p class="section-desc">
+            告别模糊的“昨晚睡得好不好”。Still 静眠通过亚米级微动声学检测与心率变异性（HRV）交叉比对，将清醒、REM、浅睡与深睡四个阶段精确切分至分钟级。不仅呈现图表，更根据生物钟节律给出次日精力修复建议。
+          </p>
+
+          <div class="metric-callout">
+            <span class="metric-callout-number">98.4%</span>
+            <span class="metric-callout-detail">与 PSG 多导睡眠金标准体征监测相关度</span>
+          </div>
+
+          <ul class="spec-list">
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>夜间微觉醒识别误差小于 1.8 分钟，精细捕获翻身与环境突变</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>自动测算入睡潜伏期（SOL），评估日间咖啡因与蓝光摄入影响</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>所有生理计算完全在设备本地离线执行，音频永不上云</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="phone-wrap">
+          <svg class="phone-svg" viewBox="0 0 440 660" role="img" aria-labelledby="report-phone-title" xmlns="http://www.w3.org/2000/svg">
+            <title id="report-phone-title">Still 静眠 深度睡眠分析与心率体征看板</title>
+            <ellipse cx="220" cy="636" rx="148" ry="14" fill="#000000" opacity="0.45" />
+            <rect x="80" y="24" width="280" height="600" rx="42" fill="#151b2b" stroke="#232d47" stroke-width="1.5" />
+            <rect x="94" y="38" width="252" height="572" rx="32" fill="#0f1420" />
+
+            <rect x="180" y="48" width="80" height="18" rx="9" fill="#0a0d14" />
+            <text x="124" y="61" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">07:31</text>
+            <text x="320" y="61" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="end">HRV OK</text>
+
+            <text x="114" y="96" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">RESTORATION INDEX</text>
+            <text x="114" y="118" fill="#f0f3fa" font-family="'Noto Serif SC', serif" font-size="16" font-weight="600">神经系统恢复评估</text>
+
+            <!-- Big Metric Panel -->
+            <rect x="110" y="132" width="220" height="136" rx="16" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+            <text x="126" y="158" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="12">副交感神经张力</text>
+            <text x="126" y="196" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="34" font-weight="700">84<tspan font-size="15" fill="#7e8ba8"> ms</tspan></text>
+            <rect x="126" y="210" width="94" height="22" rx="6" fill="#2b395d" />
+            <text x="134" y="225" fill="#c2cbe0" font-family="'Noto Sans SC', sans-serif" font-size="11">处于理想恢复区间</text>
+            <text x="248" y="174" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">静息心率</text>
+            <text x="248" y="194" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="15" font-weight="600">52 bpm</text>
+            <text x="248" y="224" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">睡眠效率 94%</text>
+
+            <!-- Hypnogram Curve Wave -->
+            <rect x="110" y="280" width="220" height="160" rx="16" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+            <text x="124" y="304" fill="#c2cbe0" font-family="'Noto Sans SC', sans-serif" font-size="12" font-weight="500">整夜脑电周期推演波形</text>
+
+            <!-- Stage Labels left -->
+            <text x="122" y="328" fill="#8f654b" font-family="'Noto Sans SC', sans-serif" font-size="10">清醒</text>
+            <text x="122" y="352" fill="#6c5a8e" font-family="'Noto Sans SC', sans-serif" font-size="10">REM</text>
+            <text x="122" y="380" fill="#2b395d" font-family="'Noto Sans SC', sans-serif" font-size="10">浅睡</text>
+            <text x="122" y="412" fill="#41568c" font-family="'Noto Sans SC', sans-serif" font-size="10">深睡</text>
+
+            <!-- Wave Lines -->
+            <line x1="146" y1="324" x2="316" y2="324" stroke="#232d47" stroke-width="1" stroke-dasharray="2 3" />
+            <line x1="146" y1="348" x2="316" y2="348" stroke="#232d47" stroke-width="1" stroke-dasharray="2 3" />
+            <line x1="146" y1="376" x2="316" y2="376" stroke="#232d47" stroke-width="1" stroke-dasharray="2 3" />
+            <line x1="146" y1="408" x2="316" y2="408" stroke="#232d47" stroke-width="1" stroke-dasharray="2 3" />
+
+            <!-- Hypnogram stepped path -->
+            <path d="M 148 324 L 162 376 L 176 408 L 202 408 L 214 348 L 230 376 L 244 408 L 268 408 L 280 348 L 298 376 L 314 324"
+                  fill="none" stroke="#e5a962" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+            <!-- Suggestion Card -->
+            <rect x="110" y="452" width="220" height="92" rx="14" fill="#1a2236" stroke="#e5a962" stroke-width="1" />
+            <text x="124" y="474" fill="#e5a962" font-family="'Noto Sans SC', sans-serif" font-size="12" font-weight="600">今日睡眠教练建议</text>
+            <text x="124" y="496" fill="#f0f3fa" font-family="'Noto Sans SC', sans-serif" font-size="11">深睡周期完整。建议今日在</text>
+            <text x="124" y="512" fill="#f0f3fa" font-family="'Noto Sans SC', sans-serif" font-size="11">14:00 前摄入咖啡，精力更充沛。</text>
+            <text x="124" y="532" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">RECOMMENDATION #104</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Substance Section 2: Sound Mixer -->
+    <section id="mixer" class="section">
+      <div class="container feature-grid feature-grid--reverse">
+        <div class="feature-copy">
+          <div class="eyebrow">
+            <span>32 轨多层原声</span>
+          </div>
+          <h2 class="section-headline">
+            告别单调循环，<br>调制独属你的雨夜
+          </h2>
+          <p class="section-desc">
+            预录的 MP3 循环音效总会被大脑敏锐捕捉，从而中断入睡进程。Still 静眠的声音引擎由格莱美级声学团队在芬兰阔叶林与高山冰川现场无损采集，支持 32 条自然音轨独立衰减与空间声学定位，让每一次呼吸都沉浸在自然律动中。
+          </p>
+
+          <div class="metric-callout">
+            <span class="metric-callout-number">192 kHz / 24-bit</span>
+            <span class="metric-callout-detail">高保真无损原声母带，动态算法随机淡入重叠</span>
+          </div>
+
+          <ul class="spec-list">
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>独创“自适应粉红噪声”，智能滤除街道车鸣与电梯骤响</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>支持多轨混音配比云端或本地存储，一键保存自定催眠预设</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>定时器自动以对数曲线淡出，入睡后无感静音，不打扰整夜安宁</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="phone-wrap">
+          <svg class="phone-svg" viewBox="0 0 440 660" role="img" aria-labelledby="mixer-phone-title" xmlns="http://www.w3.org/2000/svg">
+            <title id="mixer-phone-title">Still 静眠 自然声音混音工作台界面：雨落杉林、松针炉火、远山深雷与冰川融溪</title>
+            <ellipse cx="220" cy="636" rx="148" ry="14" fill="#000000" opacity="0.45" />
+            <rect x="80" y="24" width="280" height="600" rx="42" fill="#151b2b" stroke="#232d47" stroke-width="1.5" />
+            <rect x="94" y="38" width="252" height="572" rx="32" fill="#0f1420" />
+
+            <rect x="180" y="48" width="80" height="18" rx="9" fill="#0a0d14" />
+            <text x="124" y="61" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">22:45</text>
+            <text x="320" y="61" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="11" text-anchor="end">PLAYING</text>
+
+            <text x="114" y="94" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">SOUNDSCAPE MIXER</text>
+            <text x="114" y="116" fill="#f0f3fa" font-family="'Noto Serif SC', serif" font-size="16" font-weight="600">当前混音预设：雨夜木屋</text>
+
+            <!-- Row 1: Rain on Cedar -->
+            <g transform="translate(110, 134)">
+              <rect x="0" y="0" width="220" height="66" rx="14" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="14" y="26" fill="#f0f3fa" font-family="'Noto Sans SC', sans-serif" font-size="13" font-weight="500">雨落冷杉</text>
+              <text x="206" y="26" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="12" font-weight="600" text-anchor="end">75%</text>
+              <!-- Slider Track -->
+              <rect x="14" y="38" width="192" height="8" rx="4" fill="#232d47" />
+              <rect x="14" y="38" width="144" height="8" rx="4" fill="#e5a962" />
+              <circle cx="158" cy="42" r="8" fill="#f0f3fa" stroke="#e5a962" stroke-width="2" />
+            </g>
+
+            <!-- Row 2: Hearth Fire -->
+            <g transform="translate(110, 212)">
+              <rect x="0" y="0" width="220" height="66" rx="14" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="14" y="26" fill="#f0f3fa" font-family="'Noto Sans SC', sans-serif" font-size="13" font-weight="500">松针炉火</text>
+              <text x="206" y="26" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="12" font-weight="600" text-anchor="end">48%</text>
+              <rect x="14" y="38" width="192" height="8" rx="4" fill="#232d47" />
+              <rect x="14" y="38" width="92" height="8" rx="4" fill="#e5a962" />
+              <circle cx="106" cy="42" r="8" fill="#f0f3fa" stroke="#e5a962" stroke-width="2" />
+            </g>
+
+            <!-- Row 3: Distant Thunder -->
+            <g transform="translate(110, 290)">
+              <rect x="0" y="0" width="220" height="66" rx="14" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="14" y="26" fill="#f0f3fa" font-family="'Noto Sans SC', sans-serif" font-size="13" font-weight="500">远山深雷</text>
+              <text x="206" y="26" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="12" font-weight="600" text-anchor="end">32%</text>
+              <rect x="14" y="38" width="192" height="8" rx="4" fill="#232d47" />
+              <rect x="14" y="38" width="61" height="8" rx="4" fill="#e5a962" />
+              <circle cx="75" cy="42" r="8" fill="#f0f3fa" stroke="#e5a962" stroke-width="2" />
+            </g>
+
+            <!-- Row 4: Glacial Brook -->
+            <g transform="translate(110, 368)">
+              <rect x="0" y="0" width="220" height="66" rx="14" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="14" y="26" fill="#f0f3fa" font-family="'Noto Sans SC', sans-serif" font-size="13" font-weight="500">冰川融溪</text>
+              <text x="206" y="26" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="12" font-weight="600" text-anchor="end">15%</text>
+              <rect x="14" y="38" width="192" height="8" rx="4" fill="#232d47" />
+              <rect x="14" y="38" width="28" height="8" rx="4" fill="#495470" />
+              <circle cx="42" cy="42" r="8" fill="#f0f3fa" stroke="#495470" stroke-width="2" />
+            </g>
+
+            <!-- Timer and Preset Action Row -->
+            <g transform="translate(110, 448)">
+              <rect x="0" y="0" width="104" height="44" rx="12" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="52" y="26" fill="#c2cbe0" font-family="'Noto Sans SC', sans-serif" font-size="11" text-anchor="middle">定时 45 分钟</text>
+
+              <rect x="116" y="0" width="104" height="44" rx="12" fill="#332211" stroke="#e5a962" stroke-width="1" />
+              <text x="168" y="26" fill="#e5a962" font-family="'Noto Sans SC', sans-serif" font-size="11" font-weight="600" text-anchor="middle">保存当前预设</text>
+            </g>
+
+            <!-- Bottom Master Volume Bar -->
+            <g transform="translate(110, 506)">
+              <rect x="0" y="0" width="220" height="46" rx="14" fill="#1a2236" stroke="#232d47" stroke-width="1" />
+              <text x="14" y="28" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">总音量主控</text>
+              <rect x="86" y="20" width="120" height="6" rx="3" fill="#232d47" />
+              <rect x="86" y="20" width="76" height="6" rx="3" fill="#e5a962" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Substance Section 3: Sleep Guidance (Breathing) -->
+    <section id="breathing" class="section section--alt">
+      <div class="container feature-grid">
+        <div class="feature-copy">
+          <div class="eyebrow">
+            <span>哈佛医学院呼吸神经调节</span>
+          </div>
+          <h2 class="section-headline">
+            4-4-8 节奏引导，<br>按下大脑思维的关机键
+          </h2>
+          <p class="section-desc">
+            躺在床上难以入眠，往往是因为交感神经过度兴奋。Still 静眠内置基于临床神经反馈开发的 4-4-8 节律呼吸引导：4 秒吸气充盈血氧、4 秒屏息稳定心率、8 秒呼气激活副交感神经系统，促使脑电波从高频 Beta 转化为舒缓 Theta 波。
+          </p>
+
+          <div class="metric-callout">
+            <span class="metric-callout-number">3.2 倍</span>
+            <span class="metric-callout-detail">练习 8 分钟后，体内褪黑素受体敏感度提升</span>
+          </div>
+
+          <ul class="spec-list">
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>支持闭眼全触觉模式，依靠微弱马达震动节律指示，避免夜间屏幕刺眼</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>轻柔人声由资深正念疗愈师录制，提供双语语速自适应跟随</span>
+            </li>
+            <li class="spec-item">
+              <span class="spec-dot"></span>
+              <span>完成呼吸引导后自动无缝衔接白噪音，无需二次操作点亮屏幕</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="phone-wrap">
+          <svg class="phone-svg" viewBox="0 0 440 660" role="img" aria-labelledby="breath-phone-title" xmlns="http://www.w3.org/2000/svg">
+            <title id="breath-phone-title">Still 静眠 4-4-8 节律呼吸放松引导界面</title>
+            <ellipse cx="220" cy="636" rx="148" ry="14" fill="#000000" opacity="0.45" />
+            <rect x="80" y="24" width="280" height="600" rx="42" fill="#151b2b" stroke="#232d47" stroke-width="1.5" />
+            <rect x="94" y="38" width="252" height="572" rx="32" fill="#0f1420" />
+
+            <rect x="180" y="48" width="80" height="18" rx="9" fill="#0a0d14" />
+            <text x="124" y="61" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">23:05</text>
+            <text x="320" y="61" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11" text-anchor="end">MUTE</text>
+
+            <text x="114" y="94" fill="#7e8ba8" font-family="'Geist Mono', monospace" font-size="11">NEURO GUIDANCE</text>
+            <text x="114" y="116" fill="#f0f3fa" font-family="'Noto Serif SC', serif" font-size="16" font-weight="600">4-4-8 呼吸引导</text>
+
+            <!-- Large Breath Guidance Interactive Ring -->
+            <g transform="translate(220, 260)">
+              <!-- Outer Glow Pulsing Circle -->
+              <circle cx="0" cy="0" r="88" fill="#332211" opacity="0.4" style="animation: breathExpand 8s ease-in-out infinite;" />
+              <!-- Middle Reference Ring -->
+              <circle cx="0" cy="0" r="74" fill="none" stroke="#232d47" stroke-width="3" stroke-dasharray="4 6" />
+              <!-- Core Dynamic Arc -->
+              <circle cx="0" cy="0" r="74" fill="none" stroke="#e5a962" stroke-width="5" stroke-linecap="round" stroke-dasharray="465" stroke-dashoffset="180" transform="rotate(-90)" />
+              
+              <!-- Center Stage Text -->
+              <text x="0" y="-8" fill="#e5a962" font-family="'Noto Serif SC', serif" font-size="20" font-weight="600" text-anchor="middle">缓慢呼气</text>
+              <text x="0" y="24" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="28" font-weight="700" text-anchor="middle">06s</text>
+              <text x="0" y="44" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11" text-anchor="middle">剩余 4 个循环</text>
+            </g>
+
+            <!-- Phase Progress Step Indicators -->
+            <g transform="translate(110, 386)">
+              <rect x="0" y="0" width="68" height="42" rx="10" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="34" y="18" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11" text-anchor="middle">吸气</text>
+              <text x="34" y="33" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="12" font-weight="600" text-anchor="middle">4 秒</text>
+
+              <rect x="76" y="0" width="68" height="42" rx="10" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <text x="110" y="18" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11" text-anchor="middle">屏息</text>
+              <text x="110" y="33" fill="#f0f3fa" font-family="'Geist Mono', monospace" font-size="12" font-weight="600" text-anchor="middle">4 秒</text>
+
+              <rect x="152" y="0" width="68" height="42" rx="10" fill="#332211" stroke="#e5a962" stroke-width="1" />
+              <text x="186" y="18" fill="#e5a962" font-family="'Noto Sans SC', sans-serif" font-size="11" font-weight="600" text-anchor="middle">呼气</text>
+              <text x="186" y="33" fill="#e5a962" font-family="'Geist Mono', monospace" font-size="12" font-weight="700" text-anchor="middle">8 秒</text>
+            </g>
+
+            <!-- Start Breathing / Session Controls -->
+            <g transform="translate(110, 444)">
+              <rect x="0" y="0" width="220" height="46" rx="23" fill="#e5a962" />
+              <text x="110" y="28" fill="#0a0d14" font-family="'Noto Sans SC', sans-serif" font-size="14" font-weight="700" text-anchor="middle">开始 8 分钟睡前练习</text>
+            </g>
+
+            <!-- Haptic Vibration Hint -->
+            <g transform="translate(110, 504)">
+              <rect x="0" y="0" width="220" height="44" rx="12" fill="#151b2b" stroke="#232d47" stroke-width="1" />
+              <circle cx="20" cy="22" r="3" fill="#e5a962" />
+              <text x="32" y="27" fill="#7e8ba8" font-family="'Noto Sans SC', sans-serif" font-size="11">触觉震动已开启 · 可闭眼跟随</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Proof / Reviews -->
+    <section id="reviews" class="section">
+      <div class="container">
+        <div class="proof-head">
+          <div class="eyebrow">
+            <span>真实体验与评价</span>
+          </div>
+          <h2 class="section-headline">
+            每一个安静的黎明，<br>都有人正在醒来并感谢昨夜
+          </h2>
+          <p class="section-desc">
+            来自全球超过 1,200,000 位深受失眠困扰的程序员、创作者与焦虑症康复者的真切反馈。
+          </p>
+        </div>
+
+        <div class="proof-grid">
+          <div class="review-card">
+            <div>
+              <div class="stars" aria-label="评分 5 星">★★★★★</div>
+              <p class="review-quote">
+                “作为连续创业者，长期靠褪黑素入睡让我次日头痛欲裂。Still 的 4-4-8 闭眼震动模式简直是神级设计，无需强迫自己盯着屏幕，两周内我的深睡时长稳定在 2 小时以上。”
+              </p>
+            </div>
+            <div class="reviewer">
+              <div class="reviewer-avatar">陈</div>
+              <div class="reviewer-meta">
+                <span class="reviewer-name">陈默</span>
+                <span class="reviewer-role">独立全栈开发者 · 已连续使用 214 天</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-card">
+            <div>
+              <div class="stars" aria-label="评分 5 星">★★★★★</div>
+              <p class="review-quote">
+                “混音功能彻底解决了我对重复音效的敏感焦虑。将‘远山深雷’调到 30%，搭配‘冷杉雨声’，戴上降噪耳机后，紧绷了一整天的神经不到十分钟就彻底松弛下来。”
+              </p>
+            </div>
+            <div class="reviewer">
+              <div class="reviewer-avatar">林</div>
+              <div class="reviewer-meta">
+                <span class="reviewer-name">林楚夏</span>
+                <span class="reviewer-role">资深建筑设计师 · 已连续使用 140 天</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-card">
+            <div>
+              <div class="stars" aria-label="评分 5 星">★★★★★</div>
+              <p class="review-quote">
+                “最打动我的是克制与尊重。打开应用没有任何花哨的社交弹窗或签到积分，只有纯净的夜间黑与柔和微光。数据完全本地存储，让我不用担心自己的生理隐私。”
+              </p>
+            </div>
+            <div class="reviewer">
+              <div class="reviewer-avatar">苏</div>
+              <div class="reviewer-meta">
+                <span class="reviewer-name">苏安医生</span>
+                <span class="reviewer-role">精神心理科执业医师 · 已连续使用 310 天</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mid-Page CTA Band -->
+    <section id="download" class="cta-band">
+      <div class="container cta-inner">
+        <div class="eyebrow">
+          <span>无需绑定信用卡</span>
+        </div>
+        <h2 class="cta-title">
+          今晚，给你的大脑一个<br>沉静安歇的理由
+        </h2>
+        <p class="cta-desc">
+          下载 Still 静眠，立即开启 7 天全功能免费体验。感受高保真自然声场、深度呼吸神经引导与详尽生理报告带来的蜕变。
+        </p>
+
+        <div class="cta-buttons">
+          <a href="#" class="btn btn--primary">免费获取 iOS 版本</a>
+          <a href="#" class="btn btn--secondary">下载 Android APK / Google Play</a>
+        </div>
+
+        <div class="cta-guarantee">
+          30 天内无条件退款保证 · 全本地数据离线计算 · 绝无第三方追踪器
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="brand" aria-label="Still 静眠 首页">
+            <div class="brand-mark" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+              </svg>
+            </div>
+            <span class="brand-name">Still 静眠</span>
+          </a>
+          <p class="footer-brand-desc">
+            致力于用纯净的声学科技与临床神经科学，帮助现代人摆脱失眠与焦虑，重塑高质量夜间深睡体验。
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">产品与功能</div>
+          <ul class="footer-list">
+            <li><a href="#report" class="footer-link">声学睡眠监测</a></li>
+            <li><a href="#mixer" class="footer-link">32 轨原声混音</a></li>
+            <li><a href="#breathing" class="footer-link">4-4-8 节律引导</a></li>
+            <li><a href="#" class="footer-link">Apple Watch 联动</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">科学与研究</div>
+          <ul class="footer-list">
+            <li><a href="#" class="footer-link">临床白皮书</a></li>
+            <li><a href="#" class="footer-link">双盲测试报告</a></li>
+            <li><a href="#" class="footer-link">神经声学实验室</a></li>
+            <li><a href="#" class="footer-link">隐私与本地计算架构</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">公司与支持</div>
+          <ul class="footer-list">
+            <li><a href="#" class="footer-link">关于团队</a></li>
+            <li><a href="#" class="footer-link">加入我们</a></li>
+            <li><a href="#" class="footer-link">帮助与常见疑问</a></li>
+            <li><a href="#" class="footer-link">安全漏洞披露</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Still Acoustic Labs Inc. 保留所有权利。</div>
+        <div>Designed strictly with xdesign principles · 0 冗余 · 0 噪点</div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
